@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
+import ImageUpload from "@/components/ImageUpload";
 import {
   useGetStationStats,
   useListShows, useListPresenters, useListPosts, useListGallery,
@@ -564,25 +565,19 @@ export default function Admin() {
                 name="imageUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white/80">Cover Image URL</FormLabel>
                     <FormControl>
-                      <Input
-                        data-testid="input-post-image"
+                      <ImageUpload
+                        value={field.value ?? ""}
+                        onChange={field.onChange}
+                        folder="news"
+                        label="Cover Image"
                         placeholder="https://example.com/image.jpg"
-                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary"
-                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              {postForm.watch("imageUrl") && (
-                <div className="rounded-lg overflow-hidden h-32 bg-white/5">
-                  <img src={postForm.watch("imageUrl")} alt="Preview" className="w-full h-full object-cover" />
-                </div>
-              )}
 
               <FormField
                 control={postForm.control}
@@ -642,25 +637,19 @@ export default function Admin() {
                 name="imageUrl"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel className="text-white/80">Image URL *</FormLabel>
                     <FormControl>
-                      <Input
-                        data-testid="input-gallery-url"
+                      <ImageUpload
+                        value={field.value ?? ""}
+                        onChange={field.onChange}
+                        folder="gallery"
+                        label="Photo *"
                         placeholder="https://example.com/photo.jpg"
-                        className="bg-white/5 border-white/10 text-white placeholder:text-white/30 focus:border-primary"
-                        {...field}
                       />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
                 )}
               />
-
-              {galleryForm.watch("imageUrl") && (
-                <div className="rounded-lg overflow-hidden h-40 bg-white/5">
-                  <img src={galleryForm.watch("imageUrl")} alt="Preview" className="w-full h-full object-cover" />
-                </div>
-              )}
 
               <FormField
                 control={galleryForm.control}
