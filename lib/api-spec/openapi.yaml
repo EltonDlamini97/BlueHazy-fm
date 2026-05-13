@@ -1,22 +1,37 @@
 openapi: 3.1.0
 info:
-  # Do not change the title, if the title changes, the import paths will be broken
   title: Api
   version: 0.1.0
-  description: API specification
+  description: BlueHazy FM API specification
 servers:
   - url: /api
     description: Base API path
 tags:
   - name: health
     description: Health operations
+  - name: shows
+    description: Radio shows and schedule
+  - name: presenters
+    description: Radio presenters and DJs
+  - name: posts
+    description: News and blog posts
+  - name: gallery
+    description: Gallery images
+  - name: schedule
+    description: Weekly broadcast schedule
+  - name: newsletter
+    description: Newsletter subscriptions
+  - name: contact
+    description: Contact and inquiries
+  - name: stats
+    description: Station statistics
+
 paths:
   /healthz:
     get:
       operationId: healthCheck
       tags: [health]
       summary: Health check
-      description: Returns server health status
       responses:
         "200":
           description: Healthy
@@ -24,6 +39,473 @@ paths:
             application/json:
               schema:
                 $ref: "#/components/schemas/HealthStatus"
+
+  /shows:
+    get:
+      operationId: listShows
+      tags: [shows]
+      summary: List all shows
+      parameters:
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+      responses:
+        "200":
+          description: List of shows
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Show"
+    post:
+      operationId: createShow
+      tags: [shows]
+      summary: Create a show
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShowInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Show"
+
+  /shows/{id}:
+    get:
+      operationId: getShow
+      tags: [shows]
+      summary: Get a show
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Show
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Show"
+    patch:
+      operationId: updateShow
+      tags: [shows]
+      summary: Update a show
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ShowUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Show"
+    delete:
+      operationId: deleteShow
+      tags: [shows]
+      summary: Delete a show
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /presenters:
+    get:
+      operationId: listPresenters
+      tags: [presenters]
+      summary: List all presenters
+      responses:
+        "200":
+          description: List of presenters
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Presenter"
+    post:
+      operationId: createPresenter
+      tags: [presenters]
+      summary: Create a presenter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PresenterInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Presenter"
+
+  /presenters/{id}:
+    patch:
+      operationId: updatePresenter
+      tags: [presenters]
+      summary: Update a presenter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PresenterUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Presenter"
+    delete:
+      operationId: deletePresenter
+      tags: [presenters]
+      summary: Delete a presenter
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /posts:
+    get:
+      operationId: listPosts
+      tags: [posts]
+      summary: List news posts
+      parameters:
+        - name: featured
+          in: query
+          schema:
+            type: boolean
+        - name: category
+          in: query
+          schema:
+            type: string
+        - name: limit
+          in: query
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of posts
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Post"
+    post:
+      operationId: createPost
+      tags: [posts]
+      summary: Create a news post
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+
+  /posts/{id}:
+    get:
+      operationId: getPost
+      tags: [posts]
+      summary: Get a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Post
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+    patch:
+      operationId: updatePost
+      tags: [posts]
+      summary: Update a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/PostUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Post"
+    delete:
+      operationId: deletePost
+      tags: [posts]
+      summary: Delete a post
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /gallery:
+    get:
+      operationId: listGallery
+      tags: [gallery]
+      summary: List gallery items
+      parameters:
+        - name: category
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Gallery items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/GalleryItem"
+    post:
+      operationId: createGalleryItem
+      tags: [gallery]
+      summary: Add gallery item
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/GalleryInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/GalleryItem"
+
+  /gallery/{id}:
+    delete:
+      operationId: deleteGalleryItem
+      tags: [gallery]
+      summary: Delete gallery item
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /schedule:
+    get:
+      operationId: listSchedule
+      tags: [schedule]
+      summary: Get broadcast schedule
+      parameters:
+        - name: day
+          in: query
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Schedule slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ScheduleSlot"
+    post:
+      operationId: createScheduleSlot
+      tags: [schedule]
+      summary: Create schedule slot
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduleSlotInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduleSlot"
+
+  /schedule/{id}:
+    patch:
+      operationId: updateScheduleSlot
+      tags: [schedule]
+      summary: Update schedule slot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ScheduleSlotUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ScheduleSlot"
+    delete:
+      operationId: deleteScheduleSlot
+      tags: [schedule]
+      summary: Delete schedule slot
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /newsletter:
+    post:
+      operationId: subscribeNewsletter
+      tags: [newsletter]
+      summary: Subscribe to newsletter
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewsletterInput"
+      responses:
+        "201":
+          description: Subscribed
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/NewsletterSubscription"
+    get:
+      operationId: listNewsletterSubscribers
+      tags: [newsletter]
+      summary: List newsletter subscribers (admin)
+      responses:
+        "200":
+          description: Subscribers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/NewsletterSubscription"
+
+  /contact:
+    post:
+      operationId: submitContact
+      tags: [contact]
+      summary: Submit contact inquiry
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ContactInput"
+      responses:
+        "201":
+          description: Submitted
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ContactInquiry"
+    get:
+      operationId: listContactInquiries
+      tags: [contact]
+      summary: List contact inquiries (admin)
+      responses:
+        "200":
+          description: Inquiries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ContactInquiry"
+
+  /stats:
+    get:
+      operationId: getStationStats
+      tags: [stats]
+      summary: Get station statistics summary
+      responses:
+        "200":
+          description: Station stats
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/StationStats"
+
 components:
   schemas:
     HealthStatus:
@@ -34,3 +516,337 @@ components:
       required:
         - status
 
+    Show:
+      type: object
+      required: [id, title, description, category, imageUrl, isFeatured, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        presenterId:
+          type: ["integer", "null"]
+        presenterName:
+          type: ["string", "null"]
+        isFeatured:
+          type: boolean
+        createdAt:
+          type: string
+
+    ShowInput:
+      type: object
+      required: [title, description, category]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        description:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        presenterId:
+          type: integer
+        isFeatured:
+          type: boolean
+
+    ShowUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        category:
+          type: string
+        imageUrl:
+          type: string
+        presenterId:
+          type: integer
+        isFeatured:
+          type: boolean
+
+    Presenter:
+      type: object
+      required: [id, name, role, bio, imageUrl, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        role:
+          type: string
+        bio:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        socialInstagram:
+          type: ["string", "null"]
+        socialTwitter:
+          type: ["string", "null"]
+        socialFacebook:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    PresenterInput:
+      type: object
+      required: [name, role, bio]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        role:
+          type: string
+        bio:
+          type: string
+        imageUrl:
+          type: string
+        socialInstagram:
+          type: string
+        socialTwitter:
+          type: string
+        socialFacebook:
+          type: string
+
+    PresenterUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        role:
+          type: string
+        bio:
+          type: string
+        imageUrl:
+          type: string
+        socialInstagram:
+          type: string
+        socialTwitter:
+          type: string
+        socialFacebook:
+          type: string
+
+    Post:
+      type: object
+      required: [id, title, excerpt, content, category, imageUrl, isFeatured, publishedAt, createdAt]
+      properties:
+        id:
+          type: integer
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        tags:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        isFeatured:
+          type: boolean
+        publishedAt:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    PostInput:
+      type: object
+      required: [title, excerpt, content, category]
+      properties:
+        title:
+          type: string
+          minLength: 1
+        excerpt:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        tags:
+          type: string
+        imageUrl:
+          type: string
+        isFeatured:
+          type: boolean
+
+    PostUpdate:
+      type: object
+      properties:
+        title:
+          type: string
+        excerpt:
+          type: string
+        content:
+          type: string
+        category:
+          type: string
+        tags:
+          type: string
+        imageUrl:
+          type: string
+        isFeatured:
+          type: boolean
+
+    GalleryItem:
+      type: object
+      required: [id, imageUrl, caption, category, createdAt]
+      properties:
+        id:
+          type: integer
+        imageUrl:
+          type: string
+        caption:
+          type: string
+        category:
+          type: string
+        createdAt:
+          type: string
+
+    GalleryInput:
+      type: object
+      required: [imageUrl, caption, category]
+      properties:
+        imageUrl:
+          type: string
+        caption:
+          type: string
+        category:
+          type: string
+
+    ScheduleSlot:
+      type: object
+      required: [id, day, startTime, endTime, showId, showTitle, presenterName]
+      properties:
+        id:
+          type: integer
+        day:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        showId:
+          type: integer
+        showTitle:
+          type: string
+        presenterName:
+          type: string
+        isLive:
+          type: boolean
+
+    ScheduleSlotInput:
+      type: object
+      required: [day, startTime, endTime, showId]
+      properties:
+        day:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        showId:
+          type: integer
+
+    ScheduleSlotUpdate:
+      type: object
+      properties:
+        day:
+          type: string
+        startTime:
+          type: string
+        endTime:
+          type: string
+        showId:
+          type: integer
+
+    NewsletterInput:
+      type: object
+      required: [email]
+      properties:
+        email:
+          type: string
+          format: email
+        name:
+          type: string
+
+    NewsletterSubscription:
+      type: object
+      required: [id, email, subscribedAt]
+      properties:
+        id:
+          type: integer
+        email:
+          type: string
+        name:
+          type: ["string", "null"]
+        subscribedAt:
+          type: string
+
+    ContactInput:
+      type: object
+      required: [name, email, subject, message]
+      properties:
+        name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+        phone:
+          type: string
+        inquiryType:
+          type: string
+
+    ContactInquiry:
+      type: object
+      required: [id, name, email, subject, message, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        email:
+          type: string
+        subject:
+          type: string
+        message:
+          type: string
+        phone:
+          type: ["string", "null"]
+        inquiryType:
+          type: ["string", "null"]
+        createdAt:
+          type: string
+
+    StationStats:
+      type: object
+      required: [totalShows, totalPresenters, totalPosts, totalGalleryItems, totalSubscribers, totalInquiries]
+      properties:
+        totalShows:
+          type: integer
+        totalPresenters:
+          type: integer
+        totalPosts:
+          type: integer
+        totalGalleryItems:
+          type: integer
+        totalSubscribers:
+          type: integer
+        totalInquiries:
+          type: integer
+        featuredShows:
+          type: integer
+        featuredPosts:
+          type: integer

@@ -1,0 +1,288 @@
+Create a stunning, modern, and fully responsive website for **BlueHazy FM**, a professional online radio station. The website must have a premium media-platform appearance with a realistic radio broadcasting atmosphere. Use a beautiful combination of **blue and white colors** with subtle dark accents to create a clean, energetic, and futuristic design. The overall website should feel immersive, modern, community-focused, and visually engaging for both mobile and desktop users.
+
+The website should include realistic AI-generated images of:
+
+* Radio presenters and DJs
+* Podcast/interview setups
+* Music studio environments
+* Live broadcasting scenes
+* Community events and nightlife
+* Youth culture and entertainment
+* Professional radio equipment and microphones
+
+Use high-quality visuals, modern layouts, smooth animations, glowing UI effects, gradients, glassmorphism sections, hover effects, and audio-inspired design elements such as equalizer animations, sound waves, and dynamic lighting.
+
+---
+
+# Website Requirements
+
+## General Design
+
+* Modern and attractive UI/UX
+* Blue and white branding theme with realistic radio station aesthetics
+* Fully mobile responsive
+* Fast loading speed
+* Smooth scrolling and transitions
+* Professional typography and spacing
+* Easy navigation
+* SEO-friendly structure
+* Accessible design for all users
+
+---
+
+# Pages Needed
+
+## Home Page
+
+The homepage should immediately impress visitors with a premium radio station feel.
+
+Include:
+
+* Large hero section with AI-generated radio studio background
+* BlueHazy FM logo and branding
+* Live radio player visible immediately on page load
+* “Listen Live” CTA button
+* “Now Playing” music/show section
+* Presenter and DJ highlights
+* Featured radio shows
+* Latest news and updates
+* Upcoming events banner
+* Quick contact buttons
+* Social media links
+* Listener testimonials or comments
+* Animated equalizer/audio-wave effects
+* Newsletter subscription section
+* Sponsor/partner section
+
+Design Style:
+
+* Modern cards
+* Floating glassmorphism panels
+* Neon blue highlights
+* White clean typography
+* Dynamic animated backgrounds
+
+---
+
+## About Us Page
+
+Create a professional and inspiring station story page.
+
+Include:
+
+* History of BlueHazy FM
+* Mission and vision
+* Community impact and outreach
+* Team information
+* Presenter profiles with images
+* Company values
+* Timeline or journey section
+* AI-generated community/radio images
+
+Design should feel:
+
+* Trustworthy
+* Inspiring
+* Community-driven
+* Professional
+
+---
+
+## Live Radio Page
+
+Create a dedicated immersive streaming experience.
+
+Features:
+
+* 24/7 live streaming player
+* Large centered player design
+* Play/Pause controls
+* Volume controls
+* Stream quality options if possible
+* Auto reconnect if stream drops
+* Mobile-friendly streaming
+* Low data usage option
+* “Now Playing” track/show information
+* Animated live indicator
+* Visual equalizer effects
+* Optional chat/shoutout section
+
+The streaming server integration details will be provided later.
+
+---
+
+## Shows / Schedule Page
+
+Design a stylish and interactive radio schedule section.
+
+Include:
+
+* Daily and weekly lineup
+* Presenter names and photos
+* Show descriptions
+* Show categories
+* Time slots
+* “Currently Live” indicators
+* Upcoming show countdowns
+* Featured shows section
+
+Style:
+
+* Interactive schedule cards
+* Modern timetable layout
+* Hover animations
+* Blue glowing accents
+
+---
+
+## News / Blog Page
+
+Create a media-style news platform.
+
+Features:
+
+* Upload station updates
+* Event announcements
+* Interviews
+* Articles and entertainment news
+* Photo and video support
+* Categories and tags
+* Search functionality
+* Trending posts section
+* Featured article slider
+
+Design:
+
+* Magazine/news website style
+* Modern blog cards
+* Clean reading experience
+
+---
+
+## Gallery Page
+
+Create an immersive media gallery.
+
+Include:
+
+* Event photos
+* Studio session photos
+* Presenter images
+* Video section if possible
+* AI-generated promotional images
+* Interactive gallery filters
+* Lightbox image previews
+* Smooth image transitions
+
+Style:
+
+* Masonry/grid layouts
+* Cinematic feel
+* Blue ambient glow effects
+
+---
+
+## Advertise With Us Page
+
+Design a professional advertising/business page.
+
+Include:
+
+* Advertising packages
+* Sponsorship opportunities
+* Brand partnership information
+* Audience reach statistics
+* Contact form for businesses
+* Downloadable media kit section
+* Testimonials from advertisers
+
+Design Style:
+
+* Corporate but modern
+* Clean pricing cards
+* Professional branding visuals
+
+---
+
+## Contact Page
+
+Create a modern contact experience.
+
+Include:
+
+* WhatsApp integration
+* Email address
+* Contact form
+* Social media links
+* Google Maps location (optional)
+* Quick support buttons
+* Business inquiry section
+
+Social Platforms to Connect:
+
+* Facebook
+* TikTok
+* Instagram
+* WhatsApp
+* YouTube
+* X (Twitter)
+
+---
+
+# Live Streaming Requirements
+
+The website must support:
+
+* Integration with online radio streaming server
+* Stable live streaming player
+* Mobile-friendly audio streaming
+* Auto reconnect if stream drops
+* Low data mode option
+* Fast buffering and smooth playback
+
+---
+
+# Admin Features
+
+Create an easy-to-use admin dashboard that allows administrators to:
+
+* Upload news/posts
+* Update schedules
+* Manage presenters and shows
+* Change banners and images
+* Upload gallery content
+* Manage advertisements
+* Update social media links
+* View listener statistics if available
+* Manage live stream information
+
+---
+
+# Technical Requirements
+
+Preferred Stack:
+
+* React / Next.js
+* Tailwind CSS
+* Firebase or CMS integration
+* Streaming API integration
+* Optimized image loading
+* SEO optimization
+* Secure backend structure
+* PWA/mobile app feel
+
+---
+
+# Visual & Branding Direction
+
+The final website should feel:
+
+* Modern
+* Premium
+* Energetic
+* Youth-focused
+* Community-driven
+* Music-inspired
+* Professional and realistic
+
+Use realistic AI-generated imagery, immersive layouts, modern animations, blue-and-white glowing aesthetics, and a polished media-platform experience similar to world-class online radio stations.

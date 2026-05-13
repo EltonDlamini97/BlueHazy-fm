@@ -1,0 +1,62 @@
+uploads = []
+outputs = []
+
+[[generated]]
+id = "w3x0gPXAeJb8skAFcbh-E"
+uri = "file://artifacts/bluehazy-fm/public/images/studio-bg.png"
+type = "image"
+title = "Radio studio background"
+
+[[generated]]
+id = "LURTymj_6WcShe5AODpON"
+uri = "file://artifacts/bluehazy-fm/public/images/presenter-1.png"
+type = "image"
+title = "DJ Presenter 1"
+
+[[generated]]
+id = "7-eAyMYKWFabXuMXs-Rwz"
+uri = "file://artifacts/bluehazy-fm/public/images/presenter-2.png"
+type = "image"
+title = "DJ Presenter 2"
+
+[[generated]]
+id = "FYTUmRQjHU-LNUSEkT84w"
+uri = "file://artifacts/bluehazy-fm/public/images/show-1.png"
+type = "image"
+title = "Show Thumbnail 1"
+
+[[generated]]
+id = "4T5zeRqudxCfYH78bcWwx"
+uri = "file://artifacts/bluehazy-fm/public/images/show-2.png"
+type = "image"
+title = "Show Thumbnail 2"
+
+[[generated]]
+id = "lSE8nQGMQdjKweZllXuwb"
+uri = "file://artifacts/bluehazy-fm/public/images/gallery-1.png"
+type = "image"
+title = "Live concert crowd"
+
+[[generated]]
+id = "UUy2rzLXnnsIC4ea-ITiA"
+uri = "file://artifacts/bluehazy-fm/public/images/gallery-2.png"
+type = "image"
+title = "Studio equipment close up"
+
+[[generated]]
+id = "AkBVrgJG_cC8ypeW4EHx_"
+uri = "file://artifacts/bluehazy-fm/public/images/news-1.png"
+type = "image"
+title = "News article hero image"
+
+[[generated]]
+id = "YZJ8wcEuHi4d3ORX0Ymcw"
+uri = "file://artifacts/bluehazy-fm/public/images/news-2.png"
+type = "image"
+title = "Record playing"
+
+[[generated]]
+id = "2khrELRUGpPfl4h24IbRG"
+uri = "file://artifacts/bluehazy-fm/public/images/news-3.png"
+type = "image"
+title = "Community radio event"
