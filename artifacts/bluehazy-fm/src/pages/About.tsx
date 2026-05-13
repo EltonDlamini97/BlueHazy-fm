@@ -3,7 +3,8 @@ import { SiFacebook, SiTiktok, SiInstagram, SiX } from "react-icons/si";
 import { Mic, Radio, Award, Heart, Globe, Users } from "lucide-react";
 
 export default function About() {
-  const { data: presenters, isLoading } = useListPresenters();
+  const { data: presentersData, isLoading } = useListPresenters();
+  const presenters = Array.isArray(presentersData) ? presentersData : [];
 
   return (
     <div className="pt-8 pb-24">
@@ -66,7 +67,7 @@ export default function About() {
               Array(4).fill(0).map((_, i) => (
                 <div key={i} className="glass rounded-xl h-[400px] animate-pulse" />
               ))
-            ) : presenters?.map((presenter, i) => (
+            ) : presenters.map((presenter, i) => (
               <div key={presenter.id} className="group relative rounded-xl overflow-hidden glass border-white/10 hover:border-primary/50 transition-all duration-300">
                 <div className="aspect-[3/4] w-full overflow-hidden">
                   <img 

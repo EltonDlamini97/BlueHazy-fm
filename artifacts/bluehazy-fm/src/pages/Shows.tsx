@@ -6,8 +6,11 @@ export default function Shows() {
   const [activeDay, setActiveDay] = useState("Monday");
   const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
   
-  const { data: shows, isLoading: loadingShows } = useListShows();
-  const { data: scheduleSlots, isLoading: loadingSchedule } = useListSchedule({ day: activeDay });
+  const { data: showsData, isLoading: loadingShows } = useListShows();
+  const { data: scheduleSlotsData, isLoading: loadingSchedule } = useListSchedule({ day: activeDay });
+
+  const shows = Array.isArray(showsData) ? showsData : [];
+  const scheduleSlots = Array.isArray(scheduleSlotsData) ? scheduleSlotsData : [];
 
   return (
     <div className="pt-8 pb-24">

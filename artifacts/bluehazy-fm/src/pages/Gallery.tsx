@@ -6,11 +6,13 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState("All");
   const categories = ["All", "Events", "Studio", "Presenters", "Promo"];
   
-  const { data: galleryItems, isLoading } = useListGallery();
+  const { data: galleryData, isLoading } = useListGallery();
 
-  const filteredItems = activeCategory === "All" 
-    ? galleryItems 
-    : galleryItems?.filter(item => item.category === activeCategory);
+  const galleryItems = Array.isArray(galleryData) ? galleryData : [];
+
+  const filteredItems = activeCategory === "All"
+    ? galleryItems
+    : galleryItems.filter(item => item.category === activeCategory);
 
   return (
     <div className="pt-8 pb-24">

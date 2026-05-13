@@ -5,9 +5,11 @@ import { useState } from "react";
 
 export default function News() {
   const [searchTerm, setSearchTerm] = useState("");
-  const { data: posts, isLoading } = useListPosts();
+  const { data: postsData, isLoading } = useListPosts();
 
-  const filteredPosts = posts?.filter(post => 
+  const posts = Array.isArray(postsData) ? postsData : [];
+
+  const filteredPosts = posts.filter(post => 
     post.title.toLowerCase().includes(searchTerm.toLowerCase()) || 
     post.category.toLowerCase().includes(searchTerm.toLowerCase())
   );

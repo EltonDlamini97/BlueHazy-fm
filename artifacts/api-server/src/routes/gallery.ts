@@ -4,6 +4,9 @@ import { db, galleryTable } from "@workspace/db";
 import {
   CreateGalleryItemBody,
   DeleteGalleryItemParams,
+  UpdateGalleryItemParams,
+  UpdateGalleryItemBody,
+  UpdateGalleryItemResponse,
   ListGalleryResponse,
   ListGalleryQueryParams,
 } from "@workspace/api-zod";
@@ -46,6 +49,29 @@ router.delete("/gallery/:id", async (req, res): Promise<void> => {
     return;
   }
   res.sendStatus(204);
+});
+
+router.patch("/gallery/:id", async (req, res): Promise<void> => {
+  const params = UpdateGalleryItemParams.safeParse(req.params);
+  if (!params.success) {
+    res.status(400).json({ error: params.error.message });
+    return;
+  }
+  const parsed = UpdateGalleryItemBody.safeParse(req.body);
+  if (!parsed.success) {
+    res.status(400).json({ error: parsed.error.message });
+    return;
+  }
+  const [row] = await db
+    .update(galleryTable)
+    .set(parsed.data)
+    .where(eq(galleryTable.id, params.data.id))
+    .returning();
+  if (!row) {
+    res.status(404).json({ error: "Gallery item not found" });
+    return;
+  }
+  res.json(UpdateGalleryItemResponse.parse({ ...row, createdAt: row.createdAt.toISOString() }));
 });
 
 export default router;

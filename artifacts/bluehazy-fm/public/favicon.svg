@@ -1,3 +1,25 @@
 <svg width="180" height="180" viewBox="0 0 180 180" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="180" height="180" rx="36" fill="#FF3C00"/>
+  <!-- Background -->
+  <rect width="180" height="180" rx="36" fill="#0a0f1e"/>
+
+  <!-- Hazy blue glow -->
+  <circle cx="90" cy="90" r="70" fill="url(#glow)" opacity="0.6"/>
+
+  <!-- Radio wave arcs -->
+  <path d="M55 105 Q90 55 125 105" stroke="#3b82f6" stroke-width="6" stroke-linecap="round" fill="none" opacity="0.5"/>
+  <path d="M42 118 Q90 42 138 118" stroke="#60a5fa" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.35"/>
+
+  <!-- BH letters -->
+  <text x="90" y="108" font-family="Arial Black, Arial, sans-serif" font-weight="900" font-size="52" fill="white" text-anchor="middle" letter-spacing="-2">BH</text>
+
+  <!-- FM badge -->
+  <rect x="58" y="118" width="64" height="22" rx="11" fill="#3b82f6"/>
+  <text x="90" y="134" font-family="Arial, sans-serif" font-weight="700" font-size="13" fill="white" text-anchor="middle" letter-spacing="2">FM</text>
+
+  <defs>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#3b82f6" stop-opacity="0.8"/>
+      <stop offset="100%" stop-color="#0a0f1e" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
 </svg>

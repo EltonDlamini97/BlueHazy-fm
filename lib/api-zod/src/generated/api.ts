@@ -294,6 +294,27 @@ export const DeleteGalleryItemParams = zod.object({
 });
 
 /**
+ * @summary Update gallery item
+ */
+export const UpdateGalleryItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateGalleryItemBody = zod.object({
+  imageUrl: zod.string().optional(),
+  caption: zod.string().optional(),
+  category: zod.string().optional(),
+});
+
+export const UpdateGalleryItemResponse = zod.object({
+  id: zod.number(),
+  imageUrl: zod.string(),
+  caption: zod.string(),
+  category: zod.string(),
+  createdAt: zod.string(),
+});
+
+/**
  * @summary Get broadcast schedule
  */
 export const ListScheduleQueryParams = zod.object({

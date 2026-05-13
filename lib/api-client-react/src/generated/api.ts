@@ -1580,6 +1580,89 @@ export const useDeleteGalleryItem = <
 };
 
 /**
+ * @summary Update gallery item
+ */
+export const getUpdateGalleryItemUrl = (id: number) => {
+  return `/api/gallery/${id}`;
+};
+
+export interface GalleryItemUpdate {
+  imageUrl?: string;
+  caption?: string;
+  category?: string;
+}
+
+export const updateGalleryItem = async (
+  id: number,
+  galleryItemUpdate: GalleryItemUpdate,
+  options?: RequestInit,
+): Promise<GalleryItem> => {
+  return customFetch<GalleryItem>(getUpdateGalleryItemUrl(id), {
+    ...options,
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", ...options?.headers },
+    body: JSON.stringify(galleryItemUpdate),
+  });
+};
+
+export const getUpdateGalleryItemMutationOptions = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateGalleryItem>>,
+    TError,
+    { id: number; data: GalleryItemUpdate },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationOptions<
+  Awaited<ReturnType<typeof updateGalleryItem>>,
+  TError,
+  { id: number; data: GalleryItemUpdate },
+  TContext
+> => {
+  const mutationKey = ["updateGalleryItem"];
+  const { mutation: mutationOptions, request: requestOptions } = options
+    ? options.mutation &&
+      "mutationKey" in options.mutation &&
+      options.mutation.mutationKey
+      ? options
+      : { ...options, mutation: { ...options.mutation, mutationKey } }
+    : { mutation: { mutationKey }, request: undefined };
+
+  const mutationFn: MutationFunction<
+    Awaited<ReturnType<typeof updateGalleryItem>>,
+    { id: number; data: GalleryItemUpdate }
+  > = (props) => {
+    const { id, data } = props ?? {};
+    return updateGalleryItem(id, data, requestOptions);
+  };
+
+  return { mutationFn, ...mutationOptions };
+};
+
+export const useUpdateGalleryItem = <
+  TError = ErrorType<unknown>,
+  TContext = unknown,
+>(options?: {
+  mutation?: UseMutationOptions<
+    Awaited<ReturnType<typeof updateGalleryItem>>,
+    TError,
+    { id: number; data: GalleryItemUpdate },
+    TContext
+  >;
+  request?: SecondParameter<typeof customFetch>;
+}): UseMutationResult<
+  Awaited<ReturnType<typeof updateGalleryItem>>,
+  TError,
+  { id: number; data: GalleryItemUpdate },
+  TContext
+> => {
+  return useMutation(getUpdateGalleryItemMutationOptions(options));
+};
+
+/**
  * @summary Get broadcast schedule
  */
 export const getListScheduleUrl = (params?: ListScheduleParams) => {
