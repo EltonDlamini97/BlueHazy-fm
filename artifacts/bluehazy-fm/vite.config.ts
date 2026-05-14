@@ -3,9 +3,7 @@ import react from "@vitejs/plugin-react";
 import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
-// PORT and BASE_PATH are only required in dev/preview (Replit), not for production builds
-const rawPort = process.env.PORT;
-const port = rawPort ? Number(rawPort) : 8081;
+const port = process.env.PORT ? Number(process.env.PORT) : 8081;
 const basePath = process.env.BASE_PATH ?? "/";
 
 export default defineConfig({
