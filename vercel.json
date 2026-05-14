@@ -1,5 +1,5 @@
 {
-  "installCommand": "pnpm install --ignore-scripts --no-frozen-lockfile",
+  "installCommand": "npm install -g pnpm@11.1.1 && pnpm install --ignore-scripts --no-frozen-lockfile",
   "buildCommand": "pnpm --filter @workspace/bluehazy-fm run build",
   "outputDirectory": "artifacts/bluehazy-fm/dist/public",
   "framework": null,
