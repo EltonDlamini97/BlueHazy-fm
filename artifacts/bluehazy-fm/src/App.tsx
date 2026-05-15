@@ -15,6 +15,7 @@ import Gallery from "./pages/Gallery";
 import Advertise from "./pages/Advertise";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
+import { AdminGate } from "./components/AdminGate";
 
 const queryClient = new QueryClient();
 
@@ -31,7 +32,7 @@ function Router() {
         <Route path="/gallery" component={Gallery} />
         <Route path="/advertise" component={Advertise} />
         <Route path="/contact" component={Contact} />
-        <Route path="/admin" component={Admin} />
+        <Route path="/admin" component={() => <AdminGate><Admin /></AdminGate>} />
         <Route component={NotFound} />
       </Switch>
     </Layout>
