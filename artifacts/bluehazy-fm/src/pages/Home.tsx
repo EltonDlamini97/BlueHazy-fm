@@ -1,35 +1,14 @@
 import { Link } from "wouter";
-import { useListShows, useListPosts, useSubscribeNewsletter } from "@workspace/api-client-react";
-import { Play, Radio, Calendar, ArrowRight, Star } from "lucide-react";
+import { useListShows, useListPosts } from "@workspace/api-client-react";
+import { Play, ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useState } from "react";
-import { useToast } from "@/hooks/use-toast";
 
 export default function Home() {
   const { data: featuredShowsData, isLoading: loadingShows } = useListShows({ featured: true });
   const { data: featuredPostsData, isLoading: loadingPosts } = useListPosts({ featured: true, limit: 3 });
-  const subscribeNewsletter = useSubscribeNewsletter();
-  const { toast } = useToast();
-  const [email, setEmail] = useState("");
 
-  // Guard against non-array responses (e.g. error objects when API is unavailable)
   const featuredShows = Array.isArray(featuredShowsData) ? featuredShowsData : [];
   const featuredPosts = Array.isArray(featuredPostsData) ? featuredPostsData : [];
-
-  function handleSubscribe(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email) return;
-    subscribeNewsletter.mutate({ data: { email } }, {
-      onSuccess: () => {
-        toast({ title: "Subscribed!", description: "Welcome to the BlueHazy family." });
-        setEmail("");
-      },
-      onError: (err: any) => {
-        const msg = err?.data?.error || "Something went wrong. Please try again.";
-        toast({ variant: "destructive", title: "Error", description: msg });
-      },
-    });
-  }
 
   return (
     <div className="pb-20">
@@ -173,31 +152,6 @@ export default function Home() {
             ))}
           </div>
         </div>
-      </section>
-      
-      {/* Newsletter */}
-      <section className="py-24 relative overflow-hidden">
-         <div className="absolute inset-0 bg-primary/10" />
-         <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-2xl mx-auto text-center glass p-8 md:p-12 rounded-2xl border-primary/20 box-glow">
-              <Radio className="w-12 h-12 text-primary mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">Join the BlueHazy Family</h2>
-              <p className="text-muted-foreground mb-8 text-lg">Get exclusive updates on new shows, events, and behind-the-scenes content delivered straight to your inbox.</p>
-              <form className="flex flex-col sm:flex-row gap-3" onSubmit={handleSubscribe}>
-                <input 
-                  type="email" 
-                  placeholder="Enter your email address"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  required
-                  className="flex-1 bg-black/50 border border-white/10 rounded-lg px-6 py-4 text-white focus:outline-none focus:border-primary transition-colors"
-                />
-                <Button size="lg" type="submit" disabled={subscribeNewsletter.isPending} className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 font-bold">
-                  {subscribeNewsletter.isPending ? "Subscribing..." : "Subscribe"}
-                </Button>
-              </form>
-            </div>
-         </div>
       </section>
     </div>
   );

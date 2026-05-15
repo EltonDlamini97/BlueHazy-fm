@@ -6,7 +6,6 @@ import {
   useListPosts, useCreatePost, useUpdatePost, useDeletePost,
   useListGallery, useCreateGalleryItem, useUpdateGalleryItem, useDeleteGalleryItem,
   useListSchedule, useCreateScheduleSlot, useUpdateScheduleSlot, useDeleteScheduleSlot,
-  useListContactInquiries, useListNewsletterSubscribers,
 } from "@workspace/api-client-react";
 import type {
   Show, ShowInput, ShowUpdate,
@@ -24,7 +23,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Radio, Mic, FileText, Image as ImageIcon, MessageSquare, Users, Trash2, Pencil, Plus, Calendar } from "lucide-react";
+import { Radio, Mic, FileText, Image as ImageIcon, Trash2, Pencil, Plus, Calendar } from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 
 // ─── helpers ────────────────────────────────────────────────────────────────
@@ -720,43 +719,6 @@ function InquiriesTab() {
   );
 }
 
-// ─── Subscribers Tab ─────────────────────────────────────────────────────────
-
-function SubscribersTab() {
-  const { data: subscribersData } = useListNewsletterSubscribers();
-  const subscribers = Array.isArray(subscribersData) ? subscribersData : [];
-
-  return (
-    <div className="glass rounded-2xl border-white/10 overflow-hidden">
-      <div className="p-6 border-b border-white/10 bg-white/5 flex justify-between items-center">
-        <h3 className="font-bold text-lg text-white">Newsletter Subscribers</h3>
-        <span className="text-primary font-bold">{subscribers.length} total</span>
-      </div>
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-sm text-muted-foreground">
-          <thead className="text-xs uppercase bg-black/40 text-white/60">
-            <tr>
-              <th className="px-6 py-4">Email</th>
-              <th className="px-6 py-4">Name</th>
-              <th className="px-6 py-4">Subscribed</th>
-            </tr>
-          </thead>
-          <tbody>
-            {subscribers.length === 0 && <tr><td colSpan={3} className="px-6 py-10 text-center text-white/30">No subscribers yet.</td></tr>}
-            {subscribers.map(s => (
-              <tr key={s.id} className="border-b border-white/5 hover:bg-white/5 transition-colors">
-                <td className="px-6 py-4 font-bold text-white">{s.email}</td>
-                <td className="px-6 py-4">{s.name ?? "—"}</td>
-                <td className="px-6 py-4">{new Date(s.subscribedAt).toLocaleDateString()}</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    </div>
-  );
-}
-
 // ─── Main Admin Page ─────────────────────────────────────────────────────────
 
 export default function Admin() {
@@ -771,13 +733,11 @@ export default function Admin() {
         </div>
 
         {/* Stats Overview */}
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
           <StatCard icon={<Radio />} label="Shows" value={stats?.totalShows ?? 0} />
           <StatCard icon={<Mic />} label="DJs" value={stats?.totalPresenters ?? 0} />
           <StatCard icon={<FileText />} label="Posts" value={stats?.totalPosts ?? 0} />
           <StatCard icon={<ImageIcon />} label="Gallery" value={stats?.totalGalleryItems ?? 0} />
-          <StatCard icon={<MessageSquare />} label="Inquiries" value={stats?.totalInquiries ?? 0} />
-          <StatCard icon={<Users />} label="Subs" value={stats?.totalSubscribers ?? 0} />
         </div>
 
         <Tabs defaultValue="shows" className="w-full">
@@ -787,8 +747,6 @@ export default function Admin() {
             <TabsTrigger value="posts" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg py-2.5 px-5 gap-2"><FileText className="w-4 h-4" /> News</TabsTrigger>
             <TabsTrigger value="gallery" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg py-2.5 px-5 gap-2"><ImageIcon className="w-4 h-4" /> Gallery</TabsTrigger>
             <TabsTrigger value="schedule" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg py-2.5 px-5 gap-2"><Calendar className="w-4 h-4" /> Schedule</TabsTrigger>
-            <TabsTrigger value="inquiries" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg py-2.5 px-5 gap-2"><MessageSquare className="w-4 h-4" /> Messages</TabsTrigger>
-            <TabsTrigger value="subscribers" className="data-[state=active]:bg-primary data-[state=active]:text-primary-foreground rounded-lg py-2.5 px-5 gap-2"><Users className="w-4 h-4" /> Subscribers</TabsTrigger>
           </TabsList>
 
           <TabsContent value="shows" className="m-0"><ShowsTab /></TabsContent>
@@ -796,8 +754,6 @@ export default function Admin() {
           <TabsContent value="posts" className="m-0"><PostsTab /></TabsContent>
           <TabsContent value="gallery" className="m-0"><GalleryTab /></TabsContent>
           <TabsContent value="schedule" className="m-0"><ScheduleTab /></TabsContent>
-          <TabsContent value="inquiries" className="m-0"><InquiriesTab /></TabsContent>
-          <TabsContent value="subscribers" className="m-0"><SubscribersTab /></TabsContent>
         </Tabs>
       </div>
     </div>
