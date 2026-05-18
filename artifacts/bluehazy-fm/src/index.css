@@ -198,16 +198,41 @@
 @layer base {
   * {
     @apply border-border;
+    box-sizing: border-box;
+  }
+
+  html {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
   }
 
   body {
     @apply font-sans antialiased bg-background text-foreground;
+    overflow-x: hidden;
+    /* Push content above the fixed bottom player bar */
+    padding-bottom: calc(72px + env(safe-area-inset-bottom));
+  }
+
+  /* Prevent horizontal overflow on all elements */
+  img, video, iframe {
+    max-width: 100%;
   }
 }
 
 .glass {
   @apply bg-background/40 backdrop-blur-xl border border-white/10 shadow-lg;
 }
+
+/* Safe area utilities for notched phones */
+.safe-area-bottom {
+  padding-bottom: max(0.75rem, env(safe-area-inset-bottom));
+}
+
+/* Scrollbar hide utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }
+.scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
 
 .text-glow {
   text-shadow: 0 0 10px hsl(var(--primary) / 0.5);

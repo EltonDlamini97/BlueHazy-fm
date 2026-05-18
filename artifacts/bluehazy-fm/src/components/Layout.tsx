@@ -19,31 +19,33 @@ export function Layout({ children }: { children: React.ReactNode }) {
       <Footer />
 
       {!isLivePage && (
-        <div className="fixed bottom-0 left-0 w-full glass border-t border-white/10 p-3 z-50 safe-area-bottom">
-          <div className="container mx-auto px-4 flex items-center justify-between">
-            <div className="flex items-center gap-4">
+        <div className="fixed bottom-0 left-0 w-full glass border-t border-white/10 z-50 safe-area-bottom">
+          <div className="container mx-auto px-3 sm:px-4 py-2 flex items-center justify-between gap-2">
+            {/* Play button + track info */}
+            <div className="flex items-center gap-2 sm:gap-4 min-w-0 flex-1">
               <button
                 type="button"
-                className="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 box-glow transition-transform active:scale-95"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 box-glow transition-transform active:scale-95 shrink-0"
                 onClick={togglePlay}
                 aria-label={isPlaying ? "Pause stream" : "Play stream"}
               >
-                {isPlaying ? <Pause className="w-5 h-5 fill-current" /> : <Play className="w-5 h-5 fill-current ml-1" />}
+                {isPlaying ? <Pause className="w-4 h-4 sm:w-5 sm:h-5 fill-current" /> : <Play className="w-4 h-4 sm:w-5 sm:h-5 fill-current ml-0.5" />}
               </button>
-              <div>
-                <div className="text-xs font-bold text-primary uppercase tracking-wider mb-1 flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" />
+              <div className="min-w-0">
+                <div className="text-xs font-bold text-primary uppercase tracking-wider mb-0.5 flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse shrink-0" />
                   Live Now
                 </div>
-                <div className="font-medium text-sm text-white line-clamp-1">
+                <div className="font-medium text-xs sm:text-sm text-white truncate">
                   {nowPlaying?.displayTitle ?? "BlueHazy FM"}
                 </div>
-                <div className="text-xs text-muted-foreground line-clamp-1">
+                <div className="text-xs text-muted-foreground truncate hidden sm:block">
                   {nowPlaying?.displaySubtitle ?? "Zeno.fm stream"}
                 </div>
               </div>
             </div>
 
+            {/* Equalizer — desktop only */}
             <div className="hidden md:flex items-center justify-center flex-1 px-8">
               {isPlaying ? (
                 <div className="flex items-end justify-center gap-1 h-8 opacity-80">
@@ -62,7 +64,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
               )}
             </div>
 
-            <div className="flex items-center gap-4">
+            {/* Volume + expand */}
+            <div className="flex items-center gap-2 sm:gap-4 shrink-0">
               <div className="hidden sm:flex items-center gap-2 text-muted-foreground">
                 <Volume2 className="w-4 h-4" />
                 <input
