@@ -16,12 +16,21 @@ import Advertise from "./pages/Advertise";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import { AdminGate } from "./components/AdminGate";
+import { RadioPlayerProvider } from "./contexts/RadioPlayerContext";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      refetchOnWindowFocus: true,
+    },
+  },
+});
 
 function Router() {
   return (
-    <Layout>
+    <RadioPlayerProvider>
+      <Layout>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
@@ -35,7 +44,8 @@ function Router() {
         <Route path="/admin" component={() => <AdminGate><Admin /></AdminGate>} />
         <Route component={NotFound} />
       </Switch>
-    </Layout>
+      </Layout>
+    </RadioPlayerProvider>
   );
 }
 

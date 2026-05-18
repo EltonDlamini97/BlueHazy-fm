@@ -1,0 +1,19 @@
+[build]
+  command = "npm install -g pnpm@11.1.1 && pnpm install --ignore-scripts --no-frozen-lockfile && pnpm --filter @workspace/bluehazy-fm run build"
+  publish = "artifacts/bluehazy-fm/dist/public"
+
+[build.environment]
+  NODE_VERSION = "20"
+
+# Proxy /api/* to the Railway API server
+[[redirects]]
+  from = "/api/*"
+  to = "https://REPLACE_WITH_RAILWAY_URL/api/:splat"
+  status = 200
+  force = true
+
+# SPA fallback — all routes serve index.html
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

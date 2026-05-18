@@ -6,6 +6,7 @@ import {
   useListPosts, useCreatePost, useUpdatePost, useDeletePost,
   useListGallery, useCreateGalleryItem, useUpdateGalleryItem, useDeleteGalleryItem,
   useListSchedule, useCreateScheduleSlot, useUpdateScheduleSlot, useDeleteScheduleSlot,
+  useListContactInquiries,
 } from "@workspace/api-client-react";
 import type {
   Show, ShowInput, ShowUpdate,

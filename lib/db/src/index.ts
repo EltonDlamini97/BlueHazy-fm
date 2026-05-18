@@ -1,3 +1,4 @@
+import "./load-env.js";
 import { drizzle } from "drizzle-orm/node-postgres";
 import pg from "pg";
 import * as schema from "./schema";
@@ -6,11 +7,20 @@ const { Pool } = pg;
 
 if (!process.env.DATABASE_URL) {
   throw new Error(
-    "DATABASE_URL must be set. Did you forget to provision a database?",
+    "DATABASE_URL must be set. For Supabase: Project Settings → Database → Connection string (URI).",
   );
 }
 
-export const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+const connectionString = process.env.DATABASE_URL;
+const useSsl =
+  connectionString.includes("supabase.com") ||
+  connectionString.includes("sslmode=require");
+
+export const pool = new Pool({
+  connectionString,
+  ssl: useSsl ? { rejectUnauthorized: false } : undefined,
+  max: 10,
+});
 export const db = drizzle(pool, { schema });
 
 export * from "./schema";

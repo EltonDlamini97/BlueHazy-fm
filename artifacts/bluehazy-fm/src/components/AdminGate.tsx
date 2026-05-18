@@ -3,8 +3,17 @@ import { Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-const ADMIN_PASSWORD = "bluehazy2025";
+const DEFAULT_PASSWORD = "bluehazy2025";
+const PASSWORD_KEY = "bh_admin_password";
 const SESSION_KEY = "bh_admin_auth";
+
+export function getAdminPassword(): string {
+  return localStorage.getItem(PASSWORD_KEY) || DEFAULT_PASSWORD;
+}
+
+export function setAdminPassword(pw: string): void {
+  localStorage.setItem(PASSWORD_KEY, pw);
+}
 
 interface Props {
   children: React.ReactNode;
@@ -15,7 +24,6 @@ export function AdminGate({ children }: Props) {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
-  // Persist auth in sessionStorage so refresh doesn't log out mid-session
   useEffect(() => {
     if (sessionStorage.getItem(SESSION_KEY) === "1") {
       setAuthed(true);
@@ -24,7 +32,7 @@ export function AdminGate({ children }: Props) {
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
-    if (password === ADMIN_PASSWORD) {
+    if (password === getAdminPassword()) {
       sessionStorage.setItem(SESSION_KEY, "1");
       setAuthed(true);
       setError(false);

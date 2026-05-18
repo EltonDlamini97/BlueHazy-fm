@@ -2,16 +2,36 @@ import { Link } from "wouter";
 import { useListShows, useListPosts } from "@workspace/api-client-react";
 import { Play, ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ApiConnectionBanner } from "@/components/ApiConnectionBanner";
 
 export default function Home() {
-  const { data: featuredShowsData, isLoading: loadingShows } = useListShows({ featured: true });
-  const { data: featuredPostsData, isLoading: loadingPosts } = useListPosts({ featured: true, limit: 3 });
+  const {
+    data: showsData,
+    isLoading: loadingShows,
+    isError: showsError,
+    refetch: refetchShows,
+  } = useListShows();
+  const {
+    data: postsData,
+    isLoading: loadingPosts,
+    isError: postsError,
+    refetch: refetchPosts,
+  } = useListPosts({ limit: 3 });
 
-  const featuredShows = Array.isArray(featuredShowsData) ? featuredShowsData : [];
-  const featuredPosts = Array.isArray(featuredPostsData) ? featuredPostsData : [];
+  const apiDown = showsError || postsError;
+  const retryApi = () => {
+    void refetchShows();
+    void refetchPosts();
+  };
+
+  const shows = Array.isArray(showsData) ? showsData : [];
+  const featured = shows.filter((s) => s.isFeatured);
+  const featuredShows = (featured.length ? featured : shows).slice(0, 3);
+  const latestPosts = Array.isArray(postsData) ? postsData : [];
 
   return (
     <div className="pb-20">
+      {apiDown && <ApiConnectionBanner onRetry={retryApi} />}
       {/* Hero Section */}
       <section className="relative pt-32 pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20" style={{ backgroundImage: "url('/images/studio-bg.png')" }} />
@@ -77,7 +97,7 @@ export default function Home() {
               Array(3).fill(0).map((_, i) => (
                 <div key={i} className="glass rounded-xl h-80 animate-pulse" />
               ))
-            ) : featuredShows?.slice(0, 3).map((show) => (
+            ) : apiDown ? null : featuredShows.length > 0 ? featuredShows.map((show) => (
               <div key={show.id} className="group relative rounded-xl overflow-hidden glass border-white/10 hover:border-primary/50 transition-all duration-300">
                 <div className="aspect-[16/9] w-full overflow-hidden">
                   <img 
@@ -103,7 +123,11 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <p className="col-span-full text-center text-muted-foreground py-12">
+                No shows yet. Check back soon or explore the full lineup.
+              </p>
+            )}
           </div>
           <Link href="/shows" className="md:hidden mt-6 flex items-center justify-center text-primary hover:text-primary/80 font-medium w-full p-4 glass rounded-lg">
             View All Shows <ArrowRight className="w-4 h-4 ml-1" />
@@ -129,7 +153,7 @@ export default function Home() {
                Array(3).fill(0).map((_, i) => (
                 <div key={i} className="glass rounded-xl h-96 animate-pulse" />
               ))
-            ) : featuredPosts?.map((post) => (
+            ) : apiDown ? null : latestPosts.length > 0 ? latestPosts.map((post) => (
               <Link key={post.id} href={`/news/${post.id}`}>
                 <div className="group rounded-xl overflow-hidden glass hover:border-primary/50 transition-all duration-300 h-full flex flex-col">
                   <div className="aspect-video w-full overflow-hidden">
@@ -149,7 +173,11 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            ))}
+            )) : (
+              <p className="col-span-full text-center text-muted-foreground py-12">
+                No news posts yet. Check back soon for updates.
+              </p>
+            )}
           </div>
         </div>
       </section>

@@ -7,6 +7,10 @@
     "hello": "tsx ./src/hello.ts",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "dependencies": {
+    "dotenv": "^17.4.2",
+    "pg": "^8.20.0"
+  },
   "devDependencies": {
     "@types/node": "catalog:",
     "tsx": "catalog:"
