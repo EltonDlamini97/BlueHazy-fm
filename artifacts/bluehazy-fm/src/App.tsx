@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Layout } from "./components/Layout";
+import { setBaseUrl } from "@workspace/api-client-react";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -17,6 +18,12 @@ import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
 import { AdminGate } from "./components/AdminGate";
 import { RadioPlayerProvider } from "./contexts/RadioPlayerContext";
+
+// Point API calls to the deployed API server in production
+const apiUrl = import.meta.env.VITE_API_URL;
+if (apiUrl) {
+  setBaseUrl(apiUrl);
+}
 
 const queryClient = new QueryClient({
   defaultOptions: {

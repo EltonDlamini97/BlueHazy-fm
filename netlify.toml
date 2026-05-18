@@ -5,6 +5,7 @@
 [build.environment]
   NODE_VERSION = "22"
   NPM_FLAGS = "--no-optional"
+  VITE_API_URL = "https://bluehazy-fm-api.onrender.com"
 
 # Proxy /api/* to the Render API server
 [[redirects]]
