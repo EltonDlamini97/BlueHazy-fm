@@ -9,7 +9,7 @@
 # Proxy /api/* to the Railway API server
 [[redirects]]
   from = "/api/*"
-  to = "https://REPLACE_WITH_RAILWAY_URL/api/:splat"
+  to = "https://bluehazy-fm-production.up.railway.app/api/:splat"
   status = 200
   force = true
 
