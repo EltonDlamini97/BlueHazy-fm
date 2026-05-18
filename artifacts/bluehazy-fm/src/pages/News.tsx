@@ -18,12 +18,12 @@ export default function News() {
   const regularPosts = filteredPosts?.filter(p => p.id !== featuredPost?.id);
 
   return (
-    <div className="pt-8 pb-24">
-      <div className="container mx-auto px-4">
-        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12">
+    <div className="page-shell">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-8 sm:mb-12">
           <div>
-            <h1 className="text-4xl md:text-5xl font-black mb-4">Latest <span className="text-primary text-glow">News</span></h1>
-            <p className="text-lg text-muted-foreground">Music news, station updates, and community stories.</p>
+            <h1 className="page-title mb-3 sm:mb-4">Latest <span className="text-primary text-glow">News</span></h1>
+            <p className="page-lead">Music news, station updates, and community stories.</p>
           </div>
           
           <div className="relative w-full md:w-72">

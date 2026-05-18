@@ -38,11 +38,11 @@ export default function Gallery() {
   const isLoadingAny = isLoading || (activeCategory === "Presenters" && loadingPresenters);
 
   return (
-    <div className="pt-8 pb-24">
-      <div className="container mx-auto px-4">
-        <div className="mb-12 text-center">
-          <h1 className="text-4xl md:text-5xl font-black mb-4">Our <span className="text-primary text-glow">Gallery</span></h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Visuals from our events, studio sessions, and the community.</p>
+    <div className="page-shell">
+      <div className="container mx-auto px-4 sm:px-6">
+        <div className="mb-8 sm:mb-12 text-center">
+          <h1 className="page-title mb-3 sm:mb-4">Our <span className="text-primary text-glow">Gallery</span></h1>
+          <p className="page-lead mx-auto">Visuals from our events, studio sessions, and the community.</p>
         </div>
 
         {/* Filters */}

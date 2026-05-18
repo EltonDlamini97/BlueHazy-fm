@@ -39,7 +39,7 @@ export default function NewsPost() {
   return (
     <div className="pb-24">
       {/* Hero Image */}
-      <div className="w-full h-[50vh] min-h-[400px] relative">
+      <div className="w-full h-[35vh] sm:h-[45vh] md:h-[50vh] min-h-[220px] sm:min-h-[320px] relative">
         <img 
           src={post.imageUrl || '/images/news-1.png'} 
           alt={post.title} 
@@ -48,7 +48,7 @@ export default function NewsPost() {
         <div className="absolute inset-0 bg-gradient-to-t from-background via-background/60 to-transparent" />
       </div>
 
-      <div className="container mx-auto px-4 max-w-4xl relative z-10 -mt-32">
+      <div className="container mx-auto px-4 sm:px-6 max-w-4xl relative z-10 -mt-16 sm:-mt-24 md:-mt-32">
         <div className="mb-8">
           <Link href="/news" className="inline-flex items-center gap-2 text-primary hover:text-white transition-colors mb-8 font-medium">
             <ArrowLeft className="w-4 h-4" /> Back to News
@@ -58,7 +58,7 @@ export default function NewsPost() {
             {post.category}
           </div>
           
-          <h1 className="text-4xl md:text-6xl font-black text-white mb-6 leading-tight">
+          <h1 className="text-2xl sm:text-4xl md:text-6xl font-black text-white mb-4 sm:mb-6 leading-tight text-balance">
             {post.title}
           </h1>
           
@@ -78,7 +78,7 @@ export default function NewsPost() {
           </div>
         </div>
 
-        <div className="prose prose-invert prose-blue max-w-none prose-lg">
+        <div className="prose-responsive">
           {/* Mock content rendering since the actual content might be plain text in the DB for this mock */}
           <p className="text-xl text-white/90 leading-relaxed font-medium mb-8">
             {post.excerpt}

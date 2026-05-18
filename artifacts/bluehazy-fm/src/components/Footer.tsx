@@ -4,8 +4,8 @@ import logoPath from "@assets/OIP_(1)_1778692461968.webp";
 
 export function Footer() {
   return (
-    <footer className="bg-background border-t border-white/10 pt-16 pb-8">
-      <div className="container mx-auto px-4">
+    <footer className="bg-background border-t border-white/10 pt-12 sm:pt-16 pb-8 safe-area-bottom">
+      <div className="container mx-auto px-4 sm:px-6">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
           <div className="col-span-1 md:col-span-1">
             <Link href="/" className="flex items-center gap-3 mb-6">
