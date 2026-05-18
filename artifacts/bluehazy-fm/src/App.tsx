@@ -20,10 +20,8 @@ import { AdminGate } from "./components/AdminGate";
 import { RadioPlayerProvider } from "./contexts/RadioPlayerContext";
 
 // Point API calls to the deployed API server in production
-const apiUrl = import.meta.env.VITE_API_URL;
-if (apiUrl) {
-  setBaseUrl(apiUrl);
-}
+const apiUrl = import.meta.env.VITE_API_URL ?? "https://bluehazy-fm-api.onrender.com";
+setBaseUrl(apiUrl);
 
 const queryClient = new QueryClient({
   defaultOptions: {
