@@ -80,8 +80,11 @@ export default function Contact() {
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">Studio Address</h4>
-                    <p className="text-muted-foreground text-sm">123 Broadcast Ave, Neon District<br/>Cyber City, CC 90210</p>
+                    <h4 className="font-bold text-white mb-1">Location</h4>
+                    <p className="text-muted-foreground text-sm">
+                      Portia Shabangu Drive, Main Road<br />
+                      Hazyview 1242
+                    </p>
                   </div>
                 </div>
 
@@ -90,8 +93,15 @@ export default function Contact() {
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">Email Us</h4>
-                    <p className="text-muted-foreground text-sm">hello@bluehazy.fm<br/>studio@bluehazy.fm</p>
+                    <h4 className="font-bold text-white mb-1">Email</h4>
+                    <p className="text-muted-foreground text-sm">
+                      <a
+                        href="mailto:bluehazyfm23@gmail.com"
+                        className="hover:text-primary transition-colors"
+                      >
+                        bluehazyfm23@gmail.com
+                      </a>
+                    </p>
                   </div>
                 </div>
 
