@@ -91,6 +91,28 @@ pnpm --filter @workspace/bluehazy-fm run dev
 
 Open http://localhost:8081 (Vite proxies `/api` to port 8080).
 
+## Netlify (frontend)
+
+Root [`netlify.toml`](../netlify.toml) builds `@workspace/bluehazy-fm` and proxies `/api/*` to Render.
+
+### Connect Netlify to GitHub
+
+1. [Netlify](https://app.netlify.com) → **Add new site** → **Import from Git** → `EltonDlamini97/BlueHazy-fm`.
+2. Branch: **`main`**. Leave build settings empty so Netlify uses `netlify.toml`.
+3. **Site configuration → Build & deploy → Continuous deployment** — confirm deploys on push to `main` are enabled.
+4. After a failed deploy: **Deploys → Trigger deploy → Clear cache and deploy site**.
+
+### GitHub Actions deploy (recommended if Netlify auto-build stays stuck)
+
+Add secrets under **Settings → Secrets and variables → Actions**:
+
+| Secret | Where to find it |
+|--------|------------------|
+| `NETLIFY_AUTH_TOKEN` | Netlify → User settings → Applications → Personal access tokens |
+| `NETLIFY_SITE_ID` | Site settings → General → Site details → **API ID** |
+
+Workflow: [`.github/workflows/deploy-netlify.yml`](../.github/workflows/deploy-netlify.yml) — runs on every push to `main`.
+
 ## Troubleshooting
 
 | Issue | Check |
@@ -99,6 +121,7 @@ Open http://localhost:8081 (Vite proxies `/api` to port 8080).
 | 502 on `/api` from Vercel | `RAILWAY_PUBLIC_URL` secret matches Railway URL; API healthy at `/api/healthz` |
 | Railway deploy fails | `RAILWAY_TOKEN`, `RAILWAY_SERVICE_ID`; build logs in Actions |
 | Vercel deploy fails | `VERCEL_*` secrets; `pnpm run build` passes in CI |
+| **Netlify not updating** | Netlify **Deploy log** for failed build; Node **24** in `netlify.toml`; repo linked to `main`; run **Clear cache and deploy**; or add `NETLIFY_*` secrets and use **Deploy Netlify** workflow |
 
 ## Patch script (used in CI)
 

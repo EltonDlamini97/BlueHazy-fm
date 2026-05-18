@@ -1,10 +1,10 @@
 [build]
-  command = "npm install -g pnpm@11.1.1 && pnpm install --ignore-scripts --no-frozen-lockfile && pnpm --filter @workspace/bluehazy-fm run build"
+  # Monorepo: install from repo root, build frontend only (matches vercel.json)
+  command = "corepack enable && corepack prepare pnpm@11.1.1 --activate && pnpm install --frozen-lockfile && pnpm --filter @workspace/bluehazy-fm run build"
   publish = "artifacts/bluehazy-fm/dist/public"
 
 [build.environment]
-  NODE_VERSION = "22"
-  NPM_FLAGS = "--no-optional"
+  NODE_VERSION = "24"
   VITE_API_URL = "https://bluehazy-fm-api.onrender.com"
 
 # Proxy /api/* to the Render API server
