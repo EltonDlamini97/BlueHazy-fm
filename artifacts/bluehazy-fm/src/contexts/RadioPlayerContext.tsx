@@ -20,26 +20,66 @@ type RadioPlayerContextValue = {
 
 const RadioPlayerContext = createContext<RadioPlayerContextValue | null>(null);
 
-function playMessage(err: unknown): string {
-  const name = err instanceof Error ? err.name : "";
-  if (name === "NotAllowedError") {
-    return "Your browser blocked playback. Click play once more.";
-  }
-  return "Cannot connect to the live stream. Confirm Zeno.fm is broadcasting, then try again.";
-}
+const MAX_RETRIES = 5;
+const RETRY_DELAY_MS = 3000; // 3s between retries
 
 export function RadioPlayerProvider({ children }: { children: ReactNode }) {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const streamReadyRef = useRef(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [volume, setVolumeState] = useState(80);
   const [error, setError] = useState<string | null>(null);
 
+  // Reconnect state
+  const retryCountRef = useRef(0);
+  const retryTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const userStoppedRef = useRef(false); // true when user explicitly paused
+
+  // Sync volume
   useEffect(() => {
     const audio = audioRef.current;
     if (!audio) return;
     audio.volume = volume / 100;
   }, [volume]);
+
+  const clearRetryTimer = () => {
+    if (retryTimerRef.current) {
+      clearTimeout(retryTimerRef.current);
+      retryTimerRef.current = null;
+    }
+  };
+
+  const startStream = useCallback((audio: HTMLAudioElement) => {
+    // Force reload the stream source to get a fresh connection
+    audio.src = `${RADIO_STREAM_URL}?t=${Date.now()}`;
+    audio.load();
+    const promise = audio.play();
+    if (!promise) return;
+    promise.catch((err: unknown) => {
+      if (err instanceof DOMException && err.name === "AbortError") return;
+      if (err instanceof DOMException && err.name === "NotAllowedError") {
+        setError("Your browser blocked playback. Tap play to start.");
+        setIsPlaying(false);
+        return;
+      }
+      // Other errors — will be caught by the error event handler
+    });
+  }, []);
+
+  const scheduleReconnect = useCallback((audio: HTMLAudioElement) => {
+    if (userStoppedRef.current) return;
+    if (retryCountRef.current >= MAX_RETRIES) {
+      setError("Stream unavailable. Check your connection and try again.");
+      setIsPlaying(false);
+      return;
+    }
+    retryCountRef.current += 1;
+    const delay = RETRY_DELAY_MS * retryCountRef.current;
+    retryTimerRef.current = setTimeout(() => {
+      if (!userStoppedRef.current) {
+        startStream(audio);
+      }
+    }, delay);
+  }, [startStream]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -48,32 +88,61 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
     const onPlaying = () => {
       setIsPlaying(true);
       setError(null);
+      retryCountRef.current = 0; // reset retry counter on successful play
     };
+
     const onPause = () => {
-      if (audio.paused) setIsPlaying(false);
+      // Only update state if user paused — not if we're reconnecting
+      if (userStoppedRef.current) {
+        setIsPlaying(false);
+      }
     };
+
     const onError = () => {
+      if (userStoppedRef.current) return;
       setIsPlaying(false);
-      const code = audio.error?.code;
-      if (code === MediaError.MEDIA_ERR_SRC_NOT_SUPPORTED) {
-        setError("This stream format is not supported in your browser.");
-      } else {
-        setError(
-          "Stream unavailable. Confirm you are live on Zeno.fm, then click play.",
-        );
+      scheduleReconnect(audio);
+    };
+
+    const onStalled = () => {
+      // Stream stalled (buffering stopped) — reconnect
+      if (userStoppedRef.current) return;
+      clearRetryTimer();
+      scheduleReconnect(audio);
+    };
+
+    const onEnded = () => {
+      // Live streams shouldn't end — reconnect if they do
+      if (userStoppedRef.current) return;
+      scheduleReconnect(audio);
+    };
+
+    // Handle page visibility — reconnect when tab comes back into focus
+    const onVisibilityChange = () => {
+      if (document.visibilityState === "visible" && isPlaying && audio.paused && !userStoppedRef.current) {
+        clearRetryTimer();
+        retryCountRef.current = 0;
+        startStream(audio);
       }
     };
 
     audio.addEventListener("playing", onPlaying);
     audio.addEventListener("pause", onPause);
     audio.addEventListener("error", onError);
+    audio.addEventListener("stalled", onStalled);
+    audio.addEventListener("ended", onEnded);
+    document.addEventListener("visibilitychange", onVisibilityChange);
 
     return () => {
       audio.removeEventListener("playing", onPlaying);
       audio.removeEventListener("pause", onPause);
       audio.removeEventListener("error", onError);
+      audio.removeEventListener("stalled", onStalled);
+      audio.removeEventListener("ended", onEnded);
+      document.removeEventListener("visibilitychange", onVisibilityChange);
+      clearRetryTimer();
     };
-  }, []);
+  }, [isPlaying, scheduleReconnect, startStream]);
 
   const clearError = useCallback(() => setError(null), []);
 
@@ -81,48 +150,26 @@ export function RadioPlayerProvider({ children }: { children: ReactNode }) {
     setVolumeState(value);
   }, []);
 
-  const attachStream = useCallback((audio: HTMLAudioElement) => {
-    if (streamReadyRef.current) return;
-    audio.src = RADIO_STREAM_URL;
-    streamReadyRef.current = true;
-  }, []);
-
-  const attemptPlay = useCallback((audio: HTMLAudioElement) => {
-    const promise = audio.play();
-    if (!promise) return;
-
-    promise.catch((err: unknown) => {
-      if (err instanceof DOMException && err.name === "AbortError") {
-        return;
-      }
-      setIsPlaying(false);
-      setError(playMessage(err));
-    });
-  }, []);
-
   const togglePlay = useCallback(() => {
     const audio = audioRef.current;
     if (!audio) return;
 
     if (!audio.paused) {
+      // User explicitly stopping
+      userStoppedRef.current = true;
+      clearRetryTimer();
       audio.pause();
+      audio.src = ""; // release the stream connection
       setIsPlaying(false);
       return;
     }
 
+    // User starting playback
+    userStoppedRef.current = false;
+    retryCountRef.current = 0;
     setError(null);
-    attachStream(audio);
-
-    attemptPlay(audio);
-
-    if (audio.readyState < HTMLMediaElement.HAVE_FUTURE_DATA) {
-      const onReady = () => {
-        audio.removeEventListener("canplay", onReady);
-        if (audio.paused) attemptPlay(audio);
-      };
-      audio.addEventListener("canplay", onReady, { once: true });
-    }
-  }, [attachStream, attemptPlay]);
+    startStream(audio);
+  }, [startStream]);
 
   return (
     <RadioPlayerContext.Provider
