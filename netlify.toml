@@ -6,10 +6,10 @@
   NODE_VERSION = "22"
   NPM_FLAGS = "--no-optional"
 
-# Proxy /api/* to the Railway API server
+# Proxy /api/* to the Render API server
 [[redirects]]
   from = "/api/*"
-  to = "https://REPLACE_WITH_RAILWAY_URL/api/:splat"
+  to = "https://bluehazy-fm-api.onrender.com/api/:splat"
   status = 200
   force = true
 
