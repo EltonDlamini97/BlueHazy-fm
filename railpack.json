@@ -1,0 +1,5 @@
+{
+  "installCmd": "npm install -g pnpm@11.1.1 && pnpm install --ignore-scripts --no-frozen-lockfile",
+  "buildCmd": "pnpm --filter @workspace/api-server run build",
+  "startCmd": "node --enable-source-maps ./artifacts/api-server/dist/index.mjs"
+}
