@@ -30,24 +30,24 @@ export default function Home() {
   const latestPosts = Array.isArray(postsData) ? postsData : [];
 
   return (
-    <div className="pb-20">
+    <div className="min-w-0">
       {apiDown && <ApiConnectionBanner onRetry={retryApi} />}
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative page-hero-pad pb-12 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20" style={{ backgroundImage: "url('/images/studio-bg.png')" }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/30 via-background/90 to-background pointer-events-none" />
         
-        <div className="container mx-auto px-4 relative z-10 text-center">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-primary text-sm font-semibold mb-6 animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> Live 24/7
           </div>
-          <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight animate-fade-in animation-delay-100">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6 tracking-tight text-balance animate-fade-in animation-delay-100">
             Let Your Voice <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary text-glow">
               Be Heard
             </span>
           </h1>
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 animate-fade-in animation-delay-200">
+          <p className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 px-2 text-pretty animate-fade-in animation-delay-200">
             The pulse of the city. Live broadcasting 24/7 with the best DJs, community voices, and uninterrupted vibes.
           </p>
 
@@ -65,7 +65,7 @@ export default function Home() {
           </div>
 
           {/* Equalizer */}
-          <div className="flex items-end justify-center gap-1.5 h-16 mt-20 opacity-80 animate-fade-in animation-delay-400">
+          <div className="hidden sm:flex items-end justify-center gap-1.5 h-16 mt-12 sm:mt-20 opacity-80 animate-fade-in animation-delay-400">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
               <div 
                 key={i} 
@@ -78,12 +78,12 @@ export default function Home() {
       </section>
 
       {/* Featured Shows */}
-      <section className="py-20 relative">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-end mb-10">
+      <section className="py-12 sm:py-20 relative">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8 sm:mb-10">
             <div>
-              <h2 className="text-3xl font-black text-white mb-2 flex items-center gap-2">
-                <Star className="text-primary fill-primary w-6 h-6" /> Featured Shows
+              <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 flex items-center gap-2">
+                <Star className="text-primary fill-primary w-5 h-5 sm:w-6 sm:h-6 shrink-0" /> Featured Shows
               </h2>
               <p className="text-muted-foreground">The best of BlueHazy FM</p>
             </div>
@@ -136,11 +136,11 @@ export default function Home() {
       </section>
 
       {/* Latest News */}
-      <section className="py-20 bg-black/40">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-end mb-10">
+      <section className="py-12 sm:py-20 bg-black/40">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8 sm:mb-10">
             <div>
-              <h2 className="text-3xl font-black text-white mb-2">Latest News</h2>
+              <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">Latest News</h2>
               <p className="text-muted-foreground">Stay updated with the station and music scene</p>
             </div>
             <Link href="/news" className="hidden md:flex items-center text-primary hover:text-primary/80 font-medium">

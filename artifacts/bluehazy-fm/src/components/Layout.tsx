@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { Navbar } from "./Navbar";
 import { Footer } from "./Footer";
 import { Play, Pause, Volume2, Maximize2 } from "lucide-react";
@@ -12,10 +13,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   const isLivePage = location === "/live";
 
+  useEffect(() => {
+    document.body.classList.toggle("has-mini-player", !isLivePage);
+    document.body.classList.toggle("is-live-page", isLivePage);
+    return () => {
+      document.body.classList.remove("has-mini-player", "is-live-page");
+    };
+  }, [isLivePage]);
+
   return (
-    <div className="min-h-screen bg-background text-foreground flex flex-col">
+    <div className="min-h-dvh bg-background text-foreground flex flex-col w-full min-w-0">
       <Navbar />
-      <main className="flex-grow">{children}</main>
+      <main className="flex-1 min-w-0 w-full">{children}</main>
       <Footer />
 
       {!isLivePage && (
@@ -39,7 +48,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 <div className="font-medium text-xs sm:text-sm text-white truncate">
                   {nowPlaying?.displayTitle ?? "BlueHazy FM"}
                 </div>
-                <div className="text-xs text-muted-foreground truncate hidden sm:block">
+                <div className="text-xs text-muted-foreground truncate max-w-[45vw] sm:max-w-none">
                   {nowPlaying?.displaySubtitle ?? "Zeno.fm stream"}
                 </div>
               </div>

@@ -60,12 +60,12 @@ export default function Advertise() {
   }
 
   return (
-    <div className="pt-8 pb-24">
+    <div className="page-shell">
       {/* Hero */}
-      <section className="relative py-20 mb-16 rounded-3xl overflow-hidden glass border-white/10 mx-4">
+      <section className="relative py-12 sm:py-20 mb-10 sm:mb-16 rounded-2xl sm:rounded-3xl overflow-hidden glass border-white/10 mx-4 sm:mx-6">
         <div className="absolute inset-0 bg-primary/10 mix-blend-screen" />
-        <div className="container relative z-10 px-8 text-center max-w-4xl mx-auto">
-          <h1 className="text-4xl md:text-6xl font-black mb-6">Amplify Your <span className="text-primary text-glow">Brand</span></h1>
+        <div className="container relative z-10 px-6 sm:px-8 text-center max-w-4xl mx-auto">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6 text-balance">Amplify Your <span className="text-primary text-glow">Brand</span></h1>
           <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-8">
             Connect with our highly engaged, dynamic audience. We offer bespoke advertising solutions, event sponsorships, and integrated campaigns.
           </p>
@@ -75,7 +75,7 @@ export default function Advertise() {
         </div>
       </section>
 
-      <div className="container mx-auto px-4 max-w-6xl">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
         {/* Stats */}
         <section className="mb-24">
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">

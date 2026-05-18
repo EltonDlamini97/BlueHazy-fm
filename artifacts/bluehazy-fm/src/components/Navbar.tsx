@@ -29,7 +29,7 @@ export function Navbar() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 border-b border-white/10 bg-[hsl(225,50%,8%)]">
+      <header className="sticky top-0 z-50 border-b border-white/10 bg-[hsl(225,50%,8%)] safe-area-top">
         <div className="container mx-auto px-4 h-16 sm:h-20 flex items-center justify-between">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 sm:gap-3">
@@ -76,8 +76,8 @@ export function Navbar() {
       {/* Mobile full-screen menu overlay */}
       {isOpen && (
         <div
-          className="lg:hidden fixed inset-0 z-40 flex flex-col"
-          style={{ background: "hsl(225, 50%, 8%)" }}
+          className="lg:hidden fixed top-0 left-0 right-0 bottom-0 z-[100] flex flex-col"
+          style={{ background: "hsl(225, 50%, 8%)", minHeight: "100dvh", paddingTop: "env(safe-area-inset-top)" }}
         >
           {/* Header row inside overlay */}
           <div className="flex items-center justify-between px-4 h-16 sm:h-20 border-b border-white/10 shrink-0">
@@ -116,7 +116,7 @@ export function Navbar() {
           </nav>
 
           {/* Bottom CTA */}
-          <div className="px-6 pb-8 pt-4 shrink-0">
+          <div className="px-6 pt-4 shrink-0 pb-[max(2rem,env(safe-area-inset-bottom))]">
             <Link href="/live" onClick={() => setIsOpen(false)}>
               <Button className="w-full h-14 text-lg bg-primary text-primary-foreground font-bold box-glow rounded-full">
                 <Play className="w-5 h-5 mr-2" /> Listen Live
