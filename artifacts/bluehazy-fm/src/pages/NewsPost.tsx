@@ -1,4 +1,4 @@
-import { useGetPost } from "@workspace/api-client-react";
+import { useGetPost } from "@/lib/api-client";
 import { useParams, Link } from "wouter";
 import { ArrowLeft, Clock, Share2, Facebook, Twitter, Linkedin } from "lucide-react";
 import { Button } from "@/components/ui/button";

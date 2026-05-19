@@ -4,7 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Layout } from "./components/Layout";
-import { setBaseUrl } from "@workspace/api-client-react";
+import { setBaseUrl } from "@/lib/api-client";
 
 import Home from "./pages/Home";
 import About from "./pages/About";

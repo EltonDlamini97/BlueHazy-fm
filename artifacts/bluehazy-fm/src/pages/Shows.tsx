@@ -1,4 +1,4 @@
-import { useListShows, useListSchedule } from "@workspace/api-client-react";
+import { useListShows, useListSchedule } from "@/lib/api-client";
 import { Calendar, Clock, Radio } from "lucide-react";
 import { useState } from "react";
 

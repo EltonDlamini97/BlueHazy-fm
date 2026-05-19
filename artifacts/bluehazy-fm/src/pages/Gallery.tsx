@@ -1,4 +1,4 @@
-import { useListGallery, useListPresenters } from "@workspace/api-client-react";
+import { useListGallery, useListPresenters } from "@/lib/api-client";
 import { useState } from "react";
 import { Maximize2, Image as ImageIcon } from "lucide-react";
 

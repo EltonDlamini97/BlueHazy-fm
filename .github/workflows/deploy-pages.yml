@@ -28,17 +28,18 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install pnpm
-        run: npm install -g pnpm@11.1.1
-
-      - name: Install dependencies
-        run: pnpm install --ignore-scripts --no-frozen-lockfile
+      # Install only the frontend's own dependencies using npm
+      # We bypass the monorepo by working directly in the frontend folder
+      - name: Install frontend dependencies
+        working-directory: artifacts/bluehazy-fm
+        run: npm install --ignore-scripts --legacy-peer-deps
 
       - name: Build frontend
-        run: pnpm --filter @workspace/bluehazy-fm run build
+        working-directory: artifacts/bluehazy-fm
         env:
-          PORT: 8080
-          BASE_PATH: /
+          BASE_PATH: /BlueHazy-fm/
+          VITE_API_URL: https://bluehazy.netlify.app
+        run: npm run build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -46,7 +47,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: artifacts/bluehazy-fm/dist/public
+          path: artifacts/bluehazy-fm/dist
 
       - name: Deploy to GitHub Pages
         id: deployment

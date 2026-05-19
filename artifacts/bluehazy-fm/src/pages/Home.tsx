@@ -1,5 +1,5 @@
 import { Link } from "wouter";
-import { useListShows, useListPosts } from "@workspace/api-client-react";
+import { useListShows, useListPosts } from "@/lib/api-client";
 import { Play, ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ApiConnectionBanner } from "@/components/ApiConnectionBanner";

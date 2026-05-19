@@ -1,4 +1,4 @@
-import { useListPresenters } from "@workspace/api-client-react";
+import { useListPresenters } from "@/lib/api-client";
 import { SiFacebook, SiTiktok, SiInstagram, SiX } from "react-icons/si";
 import { Mic, Radio, Award, Heart, Globe, Users } from "lucide-react";
 

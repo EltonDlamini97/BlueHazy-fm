@@ -1,4 +1,4 @@
-import { useSubmitContact } from "@workspace/api-client-react";
+import { useSubmitContact } from "@/lib/api-client";
 import { SiFacebook, SiTiktok, SiInstagram, SiWhatsapp, SiYoutube, SiX } from "react-icons/si";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";

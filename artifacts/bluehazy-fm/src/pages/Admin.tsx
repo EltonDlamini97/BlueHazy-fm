@@ -7,14 +7,14 @@ import {
   useListGallery, useCreateGalleryItem, useUpdateGalleryItem, useDeleteGalleryItem,
   useListSchedule, useCreateScheduleSlot, useUpdateScheduleSlot, useDeleteScheduleSlot,
   useListContactInquiries,
-} from "@workspace/api-client-react";
+} from "@/lib/api-client";
 import type {
   Show, ShowInput, ShowUpdate,
   Presenter, PresenterInput, PresenterUpdate,
   Post, PostInput, PostUpdate,
   GalleryItem, GalleryInput,
   ScheduleSlot, ScheduleSlotInput,
-} from "@workspace/api-client-react";
+} from "@/lib/api-client";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle } from "@/components/ui/alert-dialog";
