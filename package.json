@@ -15,6 +15,14 @@
     "dev": "concurrently -n api,web -c blue,magenta \"pnpm dev:api\" \"pnpm dev:web\""
   },
   "private": true,
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@swc/core",
+      "esbuild",
+      "msw",
+      "unrs-resolver"
+    ]
+  },
   "devDependencies": {
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",

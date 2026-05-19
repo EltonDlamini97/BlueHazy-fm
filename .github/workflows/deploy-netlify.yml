@@ -1,0 +1,54 @@
+# Builds the frontend and deploys to Netlify on every push to main.
+# Requires GitHub secrets: NETLIFY_AUTH_TOKEN, NETLIFY_SITE_ID
+# (Netlify → Site settings → General → Site details → API ID)
+
+name: Deploy Netlify
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+concurrency:
+  group: deploy-netlify-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 11.1.1
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "24"
+          cache: "pnpm"
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build frontend
+        env:
+          VITE_API_URL: https://bluehazy-fm-api.onrender.com
+        run: pnpm --filter @workspace/bluehazy-fm run build
+
+      - name: Deploy to Netlify
+        uses: nwtgck/actions-netlify@v3.0
+        with:
+          publish-dir: ./artifacts/bluehazy-fm/dist/public
+          production-branch: main
+          production-deploy: true
+          deploy-message: "Deploy ${{ github.sha }}"
+          enable-pull-request-comment: false
+          enable-commit-comment: false
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
+        timeout-minutes: 5

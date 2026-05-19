@@ -1,16 +1,20 @@
 [build]
   command = "pnpm install --ignore-scripts --no-frozen-lockfile && pnpm --filter @workspace/bluehazy-fm run build"
   publish = "artifacts/bluehazy-fm/dist/public"
+  functions = "netlify/functions"
 
 [build.environment]
   NODE_VERSION = "22"
   NPM_FLAGS = "--no-optional"
-  VITE_API_URL = "https://bluehazy-fm-api.onrender.com"
 
-# Proxy /api/* to the Render API server
+[functions]
+  node_bundler = "esbuild"
+  included_files = ["lib/**", "artifacts/api-server/src/**"]
+
+# Route all /api/* calls to the serverless function
 [[redirects]]
   from = "/api/*"
-  to = "https://bluehazy-fm-api.onrender.com/api/:splat"
+  to = "/.netlify/functions/api/:splat"
   status = 200
   force = true
 
