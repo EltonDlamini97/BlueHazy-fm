@@ -9,16 +9,15 @@
 
 [functions]
   node_bundler = "esbuild"
-  included_files = ["lib/**", "artifacts/api-server/src/**"]
 
-# Route all /api/* calls to the serverless function
+# Route /api/* to the serverless function, passing the full path
 [[redirects]]
   from = "/api/*"
   to = "/.netlify/functions/api"
   status = 200
   force = true
 
-# SPA fallback — all routes serve index.html
+# SPA fallback
 [[redirects]]
   from = "/*"
   to = "/index.html"
