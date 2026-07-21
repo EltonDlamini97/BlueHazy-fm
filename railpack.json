@@ -1,0 +1,23 @@
+{
+  "packages": {
+    "node": "22"
+  },
+  "steps": {
+    "install": {
+      "commands": [
+        "npm install -g pnpm@11.1.1",
+        { "path": "/root/.npm-global/bin" },
+        "pnpm install --ignore-scripts --no-frozen-lockfile"
+      ]
+    },
+    "build": {
+      "inputs": [{ "step": "install" }],
+      "commands": [
+        "pnpm --filter @workspace/api-server run build"
+      ]
+    }
+  },
+  "deploy": {
+    "startCommand": "node --enable-source-maps ./artifacts/api-server/dist/index.mjs"
+  }
+}

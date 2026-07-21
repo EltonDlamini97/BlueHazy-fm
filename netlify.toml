@@ -1,0 +1,24 @@
+[build]
+  command = "npm install -g pnpm@11.1.1 && pnpm install --ignore-scripts --no-frozen-lockfile && pnpm --filter @workspace/bluehazy-fm run build"
+  publish = "artifacts/bluehazy-fm/dist/public"
+  functions = "netlify/functions"
+
+[build.environment]
+  NODE_VERSION = "22"
+  NPM_FLAGS = "--no-optional"
+
+[functions]
+  node_bundler = "esbuild"
+
+# Route /api/* to the serverless function, passing the full path
+[[redirects]]
+  from = "/api/*"
+  to = "/.netlify/functions/api"
+  status = 200
+  force = true
+
+# SPA fallback
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

@@ -1,21 +1,33 @@
-import { useListShows, useListSchedule } from "@workspace/api-client-react";
+import { useListShows, useListSchedule } from "@/lib/api-client";
 import { Calendar, Clock, Radio } from "lucide-react";
 import { useState } from "react";
 
+const WEEK_DAYS = [
+  { full: "Monday", short: "Mon" },
+  { full: "Tuesday", short: "Tue" },
+  { full: "Wednesday", short: "Wed" },
+  { full: "Thursday", short: "Thu" },
+  { full: "Friday", short: "Fri" },
+  { full: "Saturday", short: "Sat" },
+  { full: "Sunday", short: "Sun" },
+] as const;
+
 export default function Shows() {
-  const [activeDay, setActiveDay] = useState("Monday");
-  const days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"];
+  const [activeDay, setActiveDay] = useState<(typeof WEEK_DAYS)[number]["full"]>("Monday");
   
-  const { data: shows, isLoading: loadingShows } = useListShows();
-  const { data: scheduleSlots, isLoading: loadingSchedule } = useListSchedule({ day: activeDay });
+  const { data: showsData, isLoading: loadingShows } = useListShows();
+  const { data: scheduleSlotsData, isLoading: loadingSchedule } = useListSchedule({ day: activeDay });
+
+  const shows = Array.isArray(showsData) ? showsData : [];
+  const scheduleSlots = Array.isArray(scheduleSlotsData) ? scheduleSlotsData : [];
 
   return (
-    <div className="pt-8 pb-24">
-      <div className="container mx-auto px-4">
+    <div className="page-shell">
+      <div className="container mx-auto px-4 sm:px-6">
         {/* Header */}
-        <div className="mb-12">
-          <h1 className="text-4xl md:text-5xl font-black mb-4">Shows & <span className="text-primary text-glow">Schedule</span></h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Discover our lineup of premium shows, guest DJs, and live broadcasts.</p>
+        <div className="mb-8 sm:mb-12">
+          <h1 className="page-title mb-3 sm:mb-4">Shows & <span className="text-primary text-glow">Schedule</span></h1>
+          <p className="page-lead">Discover our lineup of premium shows, guest DJs, and live broadcasts.</p>
         </div>
 
         {/* Schedule Section */}
@@ -25,21 +37,32 @@ export default function Shows() {
               <h2 className="text-2xl font-bold flex items-center gap-2"><Calendar className="w-6 h-6 text-primary" /> Weekly Schedule</h2>
             </div>
             
-            {/* Days Tabs */}
-            <div className="flex overflow-x-auto gap-2 mb-8 pb-2 scrollbar-hide">
-              {days.map(day => (
-                <button
-                  key={day}
-                  onClick={() => setActiveDay(day)}
-                  className={`px-6 py-3 rounded-full text-sm font-bold whitespace-nowrap transition-all ${
-                    activeDay === day 
-                      ? "bg-primary text-primary-foreground box-glow" 
-                      : "bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-white"
-                  }`}
-                >
-                  {day}
-                </button>
-              ))}
+            {/* Days — 7 equal columns so every day fits without horizontal scroll */}
+            <div
+              className="grid grid-cols-7 gap-1 sm:gap-2 w-full mb-8"
+              role="tablist"
+              aria-label="Day of week"
+            >
+              {WEEK_DAYS.map(({ full, short }) => {
+                const selected = activeDay === full;
+                return (
+                  <button
+                    key={full}
+                    type="button"
+                    role="tab"
+                    aria-selected={selected}
+                    onClick={() => setActiveDay(full)}
+                    className={`min-w-0 rounded-full py-2 sm:py-2.5 px-0.5 sm:px-1.5 md:px-2 text-center text-[10px] sm:text-xs md:text-sm font-bold leading-tight transition-all ${
+                      selected
+                        ? "bg-primary text-primary-foreground box-glow"
+                        : "bg-white/5 text-muted-foreground hover:bg-white/10 hover:text-white"
+                    }`}
+                  >
+                    <span className="lg:hidden">{short}</span>
+                    <span className="hidden lg:inline">{full}</span>
+                  </button>
+                );
+              })}
             </div>
 
             {/* Schedule List */}

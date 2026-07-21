@@ -1,6 +1,7 @@
 import { Router, type IRouter } from "express";
 import { eq } from "drizzle-orm";
 import { db, scheduleTable, showsTable, presentersTable } from "@workspace/db";
+import { getCurrentScheduleSlot } from "../lib/schedule-live";
 import {
   CreateScheduleSlotBody,
   UpdateScheduleSlotParams,
@@ -26,17 +27,26 @@ router.get("/schedule", async (req, res): Promise<void> => {
     showId: scheduleTable.showId,
     showTitle: showsTable.title,
     presenterName: presentersTable.name,
-    isLive: scheduleTable.createdAt,
   })
     .from(scheduleTable)
     .leftJoin(showsTable, eq(scheduleTable.showId, showsTable.id))
     .leftJoin(presentersTable, eq(showsTable.presenterId, presentersTable.id));
 
-  let result = rows.map(r => ({
-    ...r,
+  const slotBase = rows.map((r) => ({
+    id: r.id,
+    day: r.day,
+    startTime: r.startTime,
+    endTime: r.endTime,
     showTitle: r.showTitle ?? "Unknown Show",
     presenterName: r.presenterName ?? "Staff",
-    isLive: false,
+  }));
+
+  const current = getCurrentScheduleSlot(slotBase);
+
+  let result = slotBase.map((slot) => ({
+    ...slot,
+    showId: rows.find((r) => r.id === slot.id)!.showId,
+    isLive: current?.id === slot.id,
   }));
 
   if (query.success && query.data.day) {
@@ -67,18 +77,26 @@ router.post("/schedule", async (req, res): Promise<void> => {
     showId: scheduleTable.showId,
     showTitle: showsTable.title,
     presenterName: presentersTable.name,
-    isLive: scheduleTable.createdAt,
   })
     .from(scheduleTable)
     .leftJoin(showsTable, eq(scheduleTable.showId, showsTable.id))
     .leftJoin(presentersTable, eq(showsTable.presenterId, presentersTable.id))
     .where(eq(scheduleTable.id, row.id));
   const slot = full[0];
+  const allSlots = await db
+    .select({
+      id: scheduleTable.id,
+      day: scheduleTable.day,
+      startTime: scheduleTable.startTime,
+      endTime: scheduleTable.endTime,
+    })
+    .from(scheduleTable);
+  const current = getCurrentScheduleSlot(allSlots);
   res.status(201).json({
     ...slot,
     showTitle: slot?.showTitle ?? "Unknown Show",
     presenterName: slot?.presenterName ?? "Staff",
-    isLive: false,
+    isLive: current?.id === row.id,
   });
 });
 
@@ -110,18 +128,26 @@ router.patch("/schedule/:id", async (req, res): Promise<void> => {
     showId: scheduleTable.showId,
     showTitle: showsTable.title,
     presenterName: presentersTable.name,
-    isLive: scheduleTable.createdAt,
   })
     .from(scheduleTable)
     .leftJoin(showsTable, eq(scheduleTable.showId, showsTable.id))
     .leftJoin(presentersTable, eq(showsTable.presenterId, presentersTable.id))
     .where(eq(scheduleTable.id, row.id));
   const slot = full[0];
+  const allSlots = await db
+    .select({
+      id: scheduleTable.id,
+      day: scheduleTable.day,
+      startTime: scheduleTable.startTime,
+      endTime: scheduleTable.endTime,
+    })
+    .from(scheduleTable);
+  const current = getCurrentScheduleSlot(allSlots);
   res.json(UpdateScheduleSlotResponse.parse({
     ...slot,
     showTitle: slot?.showTitle ?? "Unknown Show",
     presenterName: slot?.presenterName ?? "Staff",
-    isLive: false,
+    isLive: current?.id === row.id,
   }));
 });
 

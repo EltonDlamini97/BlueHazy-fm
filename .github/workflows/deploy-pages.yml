@@ -1,0 +1,54 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      # Install only the frontend's own dependencies using npm
+      # We bypass the monorepo by working directly in the frontend folder
+      - name: Install frontend dependencies
+        working-directory: artifacts/bluehazy-fm
+        run: npm install --ignore-scripts --legacy-peer-deps
+
+      - name: Build frontend
+        working-directory: artifacts/bluehazy-fm
+        env:
+          BASE_PATH: /BlueHazy-fm/
+          VITE_API_URL: https://bluehazy.netlify.app
+        run: npm run build
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: artifacts/bluehazy-fm/dist
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4

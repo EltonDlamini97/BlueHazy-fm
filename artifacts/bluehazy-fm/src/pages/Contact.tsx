@@ -1,4 +1,4 @@
-import { useSubmitContact } from "@workspace/api-client-react";
+import { useSubmitContact } from "@/lib/api-client";
 import { SiFacebook, SiTiktok, SiInstagram, SiWhatsapp, SiYoutube, SiX } from "react-icons/si";
 import { Mail, MapPin, Phone } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -58,11 +58,11 @@ export default function Contact() {
   }
 
   return (
-    <div className="pt-8 pb-24">
-      <div className="container mx-auto px-4 max-w-6xl">
-        <div className="text-center mb-16">
-          <h1 className="text-4xl md:text-5xl font-black mb-4">Get in <span className="text-primary text-glow">Touch</span></h1>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">Have a question, shoutout, or business inquiry? We want to hear from you.</p>
+    <div className="page-shell">
+      <div className="container mx-auto px-4 sm:px-6 max-w-6xl">
+        <div className="text-center mb-10 sm:mb-16">
+          <h1 className="page-title mb-3 sm:mb-4">Get in <span className="text-primary text-glow">Touch</span></h1>
+          <p className="page-lead mx-auto">Have a question, shoutout, or business inquiry? We want to hear from you.</p>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-12">
@@ -80,8 +80,11 @@ export default function Contact() {
                     <MapPin className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">Studio Address</h4>
-                    <p className="text-muted-foreground text-sm">123 Broadcast Ave, Neon District<br/>Cyber City, CC 90210</p>
+                    <h4 className="font-bold text-white mb-1">Location</h4>
+                    <p className="text-muted-foreground text-sm">
+                      Portia Shabangu Drive, Main Road<br />
+                      Hazyview 1242
+                    </p>
                   </div>
                 </div>
 
@@ -90,8 +93,15 @@ export default function Contact() {
                     <Mail className="w-5 h-5" />
                   </div>
                   <div>
-                    <h4 className="font-bold text-white mb-1">Email Us</h4>
-                    <p className="text-muted-foreground text-sm">hello@bluehazy.fm<br/>studio@bluehazy.fm</p>
+                    <h4 className="font-bold text-white mb-1">Email</h4>
+                    <p className="text-muted-foreground text-sm">
+                      <a
+                        href="mailto:bluehazyfm23@gmail.com"
+                        className="hover:text-primary transition-colors"
+                      >
+                        bluehazyfm23@gmail.com
+                      </a>
+                    </p>
                   </div>
                 </div>
 

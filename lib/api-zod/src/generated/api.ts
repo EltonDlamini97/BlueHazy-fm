@@ -182,7 +182,7 @@ export const ListPostsResponseItem = zod.object({
   excerpt: zod.string(),
   content: zod.string(),
   category: zod.string(),
-  tags: zod.string().optional(),
+  tags: zod.string().nullish(),
   imageUrl: zod.string().nullable(),
   isFeatured: zod.boolean(),
   publishedAt: zod.string().nullable(),
@@ -217,7 +217,7 @@ export const GetPostResponse = zod.object({
   excerpt: zod.string(),
   content: zod.string(),
   category: zod.string(),
-  tags: zod.string().optional(),
+  tags: zod.string().nullish(),
   imageUrl: zod.string().nullable(),
   isFeatured: zod.boolean(),
   publishedAt: zod.string().nullable(),
@@ -247,7 +247,7 @@ export const UpdatePostResponse = zod.object({
   excerpt: zod.string(),
   content: zod.string(),
   category: zod.string(),
-  tags: zod.string().optional(),
+  tags: zod.string().nullish(),
   imageUrl: zod.string().nullable(),
   isFeatured: zod.boolean(),
   publishedAt: zod.string().nullable(),
@@ -291,6 +291,27 @@ export const CreateGalleryItemBody = zod.object({
  */
 export const DeleteGalleryItemParams = zod.object({
   id: zod.coerce.number(),
+});
+
+/**
+ * @summary Update gallery item
+ */
+export const UpdateGalleryItemParams = zod.object({
+  id: zod.coerce.number(),
+});
+
+export const UpdateGalleryItemBody = zod.object({
+  imageUrl: zod.string().optional(),
+  caption: zod.string().optional(),
+  category: zod.string().optional(),
+});
+
+export const UpdateGalleryItemResponse = zod.object({
+  id: zod.number(),
+  imageUrl: zod.string(),
+  caption: zod.string(),
+  category: zod.string(),
+  createdAt: zod.string(),
 });
 
 /**

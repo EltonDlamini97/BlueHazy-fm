@@ -8,6 +8,7 @@ import scheduleRouter from "./schedule";
 import newsletterRouter from "./newsletter";
 import contactRouter from "./contact";
 import statsRouter from "./stats";
+import liveRouter from "./live";
 
 const router: IRouter = Router();
 
@@ -20,5 +21,6 @@ router.use(scheduleRouter);
 router.use(newsletterRouter);
 router.use(contactRouter);
 router.use(statsRouter);
+router.use(liveRouter);
 
 export default router;

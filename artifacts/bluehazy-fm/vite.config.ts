@@ -4,30 +4,23 @@ import tailwindcss from "@tailwindcss/vite";
 import path from "path";
 
 export default defineConfig({
-  base: "/",
-  plugins: [
-    react(),
-    tailwindcss(),
-  ],
+  base: process.env.BASE_PATH ?? "/",
+  plugins: [react(), tailwindcss()],
   resolve: {
     alias: {
       "@": path.resolve(import.meta.dirname, "src"),
-      "@assets": path.resolve(import.meta.dirname, "..", "..", "attached_assets"),
     },
     dedupe: ["react", "react-dom"],
   },
-  root: path.resolve(import.meta.dirname),
   build: {
-    outDir: path.resolve(import.meta.dirname, "dist"),
+    outDir: "dist",
     emptyOutDir: true,
   },
   server: {
     port: 5173,
-    host: "0.0.0.0",
     proxy: {
-      // Proxy /api calls to the backend during local dev
       "/api": {
-        target: process.env.VITE_API_URL || "http://localhost:3000",
+        target: process.env.VITE_API_URL ?? "http://localhost:8080",
         changeOrigin: true,
       },
     },

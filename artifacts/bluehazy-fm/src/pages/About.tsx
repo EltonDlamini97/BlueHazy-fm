@@ -1,19 +1,20 @@
-import { useListPresenters } from "@workspace/api-client-react";
+import { useListPresenters } from "@/lib/api-client";
 import { SiFacebook, SiTiktok, SiInstagram, SiX } from "react-icons/si";
 import { Mic, Radio, Award, Heart, Globe, Users } from "lucide-react";
 
 export default function About() {
-  const { data: presenters, isLoading } = useListPresenters();
+  const { data: presentersData, isLoading } = useListPresenters();
+  const presenters = Array.isArray(presentersData) ? presentersData : [];
 
   return (
-    <div className="pt-8 pb-24">
+    <div className="page-shell">
       {/* Hero */}
-      <section className="relative py-20 md:py-32 mb-16 rounded-3xl overflow-hidden glass border-white/10 mx-4">
+      <section className="relative py-12 sm:py-20 md:py-32 mb-10 sm:mb-16 rounded-2xl sm:rounded-3xl overflow-hidden glass border-white/10 mx-4 sm:mx-6 lg:mx-auto lg:max-w-7xl">
         <div className="absolute inset-0 bg-cover bg-center opacity-30 mix-blend-luminosity" style={{ backgroundImage: "url('/images/studio-bg.png')" }} />
         <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
-        <div className="container relative z-10 px-8">
+        <div className="container relative z-10 px-6 sm:px-8">
           <div className="max-w-2xl">
-            <h1 className="text-4xl md:text-6xl font-black mb-6">More Than Just a <span className="text-primary text-glow">Radio Station</span></h1>
+            <h1 className="text-3xl sm:text-4xl md:text-6xl font-black mb-4 sm:mb-6 text-balance">More Than Just a <span className="text-primary text-glow">Radio Station</span></h1>
             <p className="text-lg md:text-xl text-white/80 leading-relaxed mb-8">
               We are the heartbeat of the community. A platform for emerging artists, unfiltered voices, and uninterrupted vibes. Born in the underground, broadcasting to the world.
             </p>
@@ -66,7 +67,7 @@ export default function About() {
               Array(4).fill(0).map((_, i) => (
                 <div key={i} className="glass rounded-xl h-[400px] animate-pulse" />
               ))
-            ) : presenters?.map((presenter, i) => (
+            ) : presenters.map((presenter, i) => (
               <div key={presenter.id} className="group relative rounded-xl overflow-hidden glass border-white/10 hover:border-primary/50 transition-all duration-300">
                 <div className="aspect-[3/4] w-full overflow-hidden">
                   <img 

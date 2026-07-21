@@ -1,30 +1,53 @@
 import { Link } from "wouter";
-import { useListShows, useListPosts } from "@workspace/api-client-react";
-import { Play, Radio, Calendar, ArrowRight, Star } from "lucide-react";
+import { useListShows, useListPosts } from "@/lib/api-client";
+import { Play, ArrowRight, Star } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { ApiConnectionBanner } from "@/components/ApiConnectionBanner";
 
 export default function Home() {
-  const { data: featuredShows, isLoading: loadingShows } = useListShows({ featured: true });
-  const { data: featuredPosts, isLoading: loadingPosts } = useListPosts({ featured: true, limit: 3 });
+  const {
+    data: showsData,
+    isLoading: loadingShows,
+    isError: showsError,
+    refetch: refetchShows,
+  } = useListShows();
+  const {
+    data: postsData,
+    isLoading: loadingPosts,
+    isError: postsError,
+    refetch: refetchPosts,
+  } = useListPosts({ limit: 3 });
+
+  const apiDown = showsError || postsError;
+  const retryApi = () => {
+    void refetchShows();
+    void refetchPosts();
+  };
+
+  const shows = Array.isArray(showsData) ? showsData : [];
+  const featured = shows.filter((s) => s.isFeatured);
+  const featuredShows = (featured.length ? featured : shows).slice(0, 3);
+  const latestPosts = Array.isArray(postsData) ? postsData : [];
 
   return (
-    <div className="pb-20">
+    <div className="min-w-0">
+      {apiDown && <ApiConnectionBanner onRetry={retryApi} />}
       {/* Hero Section */}
-      <section className="relative pt-32 pb-20 overflow-hidden">
+      <section className="relative page-hero-pad pb-12 sm:pb-20 overflow-hidden">
         <div className="absolute inset-0 bg-cover bg-center bg-no-repeat opacity-20" style={{ backgroundImage: "url('/images/studio-bg.png')" }} />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-primary/30 via-background/90 to-background pointer-events-none" />
         
-        <div className="container mx-auto px-4 relative z-10 text-center">
+        <div className="container mx-auto px-4 sm:px-6 relative z-10 text-center">
           <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full glass text-primary text-sm font-semibold mb-6 animate-fade-in">
             <span className="w-2 h-2 rounded-full bg-red-500 animate-pulse" /> Live 24/7
           </div>
-          <h1 className="text-5xl md:text-7xl font-black mb-6 tracking-tight animate-fade-in animation-delay-100">
+          <h1 className="text-4xl sm:text-5xl md:text-7xl font-black mb-4 sm:mb-6 tracking-tight text-balance animate-fade-in animation-delay-100">
             Let Your Voice <br className="hidden md:block" />
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-primary text-glow">
               Be Heard
             </span>
           </h1>
-          <p className="text-muted-foreground text-lg md:text-xl max-w-2xl mx-auto mb-10 animate-fade-in animation-delay-200">
+          <p className="text-muted-foreground text-base sm:text-lg md:text-xl max-w-2xl mx-auto mb-8 sm:mb-10 px-2 text-pretty animate-fade-in animation-delay-200">
             The pulse of the city. Live broadcasting 24/7 with the best DJs, community voices, and uninterrupted vibes.
           </p>
 
@@ -42,7 +65,7 @@ export default function Home() {
           </div>
 
           {/* Equalizer */}
-          <div className="flex items-end justify-center gap-1.5 h-16 mt-20 opacity-80 animate-fade-in animation-delay-400">
+          <div className="hidden sm:flex items-end justify-center gap-1.5 h-16 mt-12 sm:mt-20 opacity-80 animate-fade-in animation-delay-400">
             {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
               <div 
                 key={i} 
@@ -55,12 +78,12 @@ export default function Home() {
       </section>
 
       {/* Featured Shows */}
-      <section className="py-20 relative">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-end mb-10">
+      <section className="py-12 sm:py-20 relative">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8 sm:mb-10">
             <div>
-              <h2 className="text-3xl font-black text-white mb-2 flex items-center gap-2">
-                <Star className="text-primary fill-primary w-6 h-6" /> Featured Shows
+              <h2 className="text-2xl sm:text-3xl font-black text-white mb-2 flex items-center gap-2">
+                <Star className="text-primary fill-primary w-5 h-5 sm:w-6 sm:h-6 shrink-0" /> Featured Shows
               </h2>
               <p className="text-muted-foreground">The best of BlueHazy FM</p>
             </div>
@@ -74,7 +97,7 @@ export default function Home() {
               Array(3).fill(0).map((_, i) => (
                 <div key={i} className="glass rounded-xl h-80 animate-pulse" />
               ))
-            ) : featuredShows?.slice(0, 3).map((show) => (
+            ) : apiDown ? null : featuredShows.length > 0 ? featuredShows.map((show) => (
               <div key={show.id} className="group relative rounded-xl overflow-hidden glass border-white/10 hover:border-primary/50 transition-all duration-300">
                 <div className="aspect-[16/9] w-full overflow-hidden">
                   <img 
@@ -100,7 +123,11 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ))}
+            )) : (
+              <p className="col-span-full text-center text-muted-foreground py-12">
+                No shows yet. Check back soon or explore the full lineup.
+              </p>
+            )}
           </div>
           <Link href="/shows" className="md:hidden mt-6 flex items-center justify-center text-primary hover:text-primary/80 font-medium w-full p-4 glass rounded-lg">
             View All Shows <ArrowRight className="w-4 h-4 ml-1" />
@@ -109,11 +136,11 @@ export default function Home() {
       </section>
 
       {/* Latest News */}
-      <section className="py-20 bg-black/40">
-        <div className="container mx-auto px-4">
-          <div className="flex justify-between items-end mb-10">
+      <section className="py-12 sm:py-20 bg-black/40">
+        <div className="container mx-auto px-4 sm:px-6">
+          <div className="flex flex-col sm:flex-row sm:justify-between sm:items-end gap-4 mb-8 sm:mb-10">
             <div>
-              <h2 className="text-3xl font-black text-white mb-2">Latest News</h2>
+              <h2 className="text-2xl sm:text-3xl font-black text-white mb-2">Latest News</h2>
               <p className="text-muted-foreground">Stay updated with the station and music scene</p>
             </div>
             <Link href="/news" className="hidden md:flex items-center text-primary hover:text-primary/80 font-medium">
@@ -126,7 +153,7 @@ export default function Home() {
                Array(3).fill(0).map((_, i) => (
                 <div key={i} className="glass rounded-xl h-96 animate-pulse" />
               ))
-            ) : featuredPosts?.map((post) => (
+            ) : apiDown ? null : latestPosts.length > 0 ? latestPosts.map((post) => (
               <Link key={post.id} href={`/news/${post.id}`}>
                 <div className="group rounded-xl overflow-hidden glass hover:border-primary/50 transition-all duration-300 h-full flex flex-col">
                   <div className="aspect-video w-full overflow-hidden">
@@ -146,31 +173,13 @@ export default function Home() {
                   </div>
                 </div>
               </Link>
-            ))}
+            )) : (
+              <p className="col-span-full text-center text-muted-foreground py-12">
+                No news posts yet. Check back soon for updates.
+              </p>
+            )}
           </div>
         </div>
-      </section>
-      
-      {/* Newsletter */}
-      <section className="py-24 relative overflow-hidden">
-         <div className="absolute inset-0 bg-primary/10" />
-         <div className="container mx-auto px-4 relative z-10">
-            <div className="max-w-2xl mx-auto text-center glass p-8 md:p-12 rounded-2xl border-primary/20 box-glow">
-              <Radio className="w-12 h-12 text-primary mx-auto mb-6" />
-              <h2 className="text-3xl md:text-4xl font-black text-white mb-4">Join the BlueHazy Family</h2>
-              <p className="text-muted-foreground mb-8 text-lg">Get exclusive updates on new shows, events, and behind-the-scenes content delivered straight to your inbox.</p>
-              <form className="flex flex-col sm:flex-row gap-3" onSubmit={(e) => e.preventDefault()}>
-                <input 
-                  type="email" 
-                  placeholder="Enter your email address" 
-                  className="flex-1 bg-black/50 border border-white/10 rounded-lg px-6 py-4 text-white focus:outline-none focus:border-primary transition-colors"
-                />
-                <Button size="lg" type="submit" className="bg-primary text-primary-foreground hover:bg-primary/90 h-14 px-8 font-bold">
-                  Subscribe
-                </Button>
-              </form>
-            </div>
-         </div>
       </section>
     </div>
   );

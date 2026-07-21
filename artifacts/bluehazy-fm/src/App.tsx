@@ -4,6 +4,7 @@ import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/not-found";
 import { Layout } from "./components/Layout";
+import { setBaseUrl } from "@/lib/api-client";
 
 import Home from "./pages/Home";
 import About from "./pages/About";
@@ -15,12 +16,29 @@ import Gallery from "./pages/Gallery";
 import Advertise from "./pages/Advertise";
 import Contact from "./pages/Contact";
 import Admin from "./pages/Admin";
+import { AdminGate } from "./components/AdminGate";
+import { RadioPlayerProvider } from "./contexts/RadioPlayerContext";
 
-const queryClient = new QueryClient();
+// In production the API is served from the same domain via Netlify Functions (/api/*)
+// Only set a base URL if explicitly overridden (e.g. for local dev pointing at a remote API)
+const apiUrl = import.meta.env.VITE_API_URL;
+if (apiUrl) {
+  setBaseUrl(apiUrl);
+}
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 2,
+      refetchOnWindowFocus: true,
+    },
+  },
+});
 
 function Router() {
   return (
-    <Layout>
+    <RadioPlayerProvider>
+      <Layout>
       <Switch>
         <Route path="/" component={Home} />
         <Route path="/about" component={About} />
@@ -31,10 +49,11 @@ function Router() {
         <Route path="/gallery" component={Gallery} />
         <Route path="/advertise" component={Advertise} />
         <Route path="/contact" component={Contact} />
-        <Route path="/admin" component={Admin} />
+        <Route path="/admin" component={() => <AdminGate><Admin /></AdminGate>} />
         <Route component={NotFound} />
       </Switch>
-    </Layout>
+      </Layout>
+    </RadioPlayerProvider>
   );
 }
 
