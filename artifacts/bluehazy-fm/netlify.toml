@@ -1,0 +1,31 @@
+[build]
+  # Run from the monorepo root — Netlify will cd here automatically
+  # if you set the "Base directory" to artifacts/bluehazy-fm in the UI,
+  # or you can set the publish/command here relative to repo root.
+  command   = "npm install -g pnpm && pnpm install && pnpm --filter @workspace/bluehazy-fm build"
+  publish   = "artifacts/bluehazy-fm/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
+  # Set VITE_API_URL in Netlify's site settings → Environment variables
+  # e.g. VITE_API_URL = "https://your-api-server.onrender.com"
+
+# ─── SPA fallback ────────────────────────────────────────────────────────────
+# All routes that are not static files are served index.html so that
+# client-side routing (wouter) works correctly on hard refresh / direct URL.
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
+
+# ─── API proxy (optional) ────────────────────────────────────────────────────
+# If you deploy the api-server separately, uncomment this block and set the
+# real API origin in Netlify's environment variables as API_ORIGIN.
+# This proxies /api/* from the Netlify CDN to your backend so the frontend
+# can use relative /api paths without CORS issues.
+#
+# [[redirects]]
+#   from   = "/api/*"
+#   to     = ":API_ORIGIN/api/:splat"
+#   status = 200
+#   force  = true
