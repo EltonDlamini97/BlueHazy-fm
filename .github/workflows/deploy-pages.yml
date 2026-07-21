@@ -28,16 +28,27 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install frontend dependencies
-        working-directory: artifacts/bluehazy-fm
-        run: npm install --legacy-peer-deps --workspaces=false
-
-      - name: Build frontend
-        working-directory: artifacts/bluehazy-fm
+      # Copy frontend to a completely isolated directory outside the repo
+      # so that no parent package.json / pnpm-workspace.yaml interferes
+      - name: Isolate and build frontend
         env:
           BASE_PATH: /BlueHazy-fm/
           VITE_API_URL: https://bluehazy-fm-api.onrender.com
-        run: npx --no vite build
+        run: |
+          # Copy frontend to a clean directory outside the repo
+          cp -r artifacts/bluehazy-fm /tmp/bluehazy-build
+          # Remove any .npmrc that might have ignore-scripts
+          rm -f /tmp/bluehazy-build/.npmrc
+          cd /tmp/bluehazy-build
+          # Fresh install with no workspace interference
+          npm install --legacy-peer-deps
+          echo "installed $(ls node_modules/.bin | wc -l) binaries"
+          ls node_modules/.bin | grep vite || echo "vite not found"
+          # Build
+          npm run build
+
+      - name: Copy build output
+        run: cp -r /tmp/bluehazy-build/dist artifacts/bluehazy-fm/dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
