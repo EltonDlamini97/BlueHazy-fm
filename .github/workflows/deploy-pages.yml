@@ -28,17 +28,15 @@ jobs:
         with:
           node-version: '22'
 
-      # Install only the frontend's own dependencies using npm
-      # We bypass the monorepo by working directly in the frontend folder
       - name: Install frontend dependencies
         working-directory: artifacts/bluehazy-fm
-        run: npm install --ignore-scripts --legacy-peer-deps
+        run: npm install --legacy-peer-deps
 
       - name: Build frontend
         working-directory: artifacts/bluehazy-fm
         env:
           BASE_PATH: /BlueHazy-fm/
-          VITE_API_URL: https://bluehazy.netlify.app
+          VITE_API_URL: https://bluehazy-fm-api.onrender.com
         run: npm run build
 
       - name: Setup Pages
