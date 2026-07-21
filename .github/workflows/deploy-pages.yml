@@ -30,14 +30,14 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: artifacts/bluehazy-fm
-        run: npm install --legacy-peer-deps
+        run: npm install --legacy-peer-deps --workspaces=false
 
       - name: Build frontend
         working-directory: artifacts/bluehazy-fm
         env:
           BASE_PATH: /BlueHazy-fm/
           VITE_API_URL: https://bluehazy-fm-api.onrender.com
-        run: npm run build
+        run: npx --no vite build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
