@@ -1,6 +1,6 @@
 [build]
   command = "npm install -g pnpm@11.1.1 && pnpm install --ignore-scripts --no-frozen-lockfile && pnpm --filter @workspace/bluehazy-fm run build"
-  publish = "artifacts/bluehazy-fm/dist/public"
+  publish = "artifacts/bluehazy-fm/dist"
   functions = "netlify/functions"
 
 [build.environment]

@@ -1,7 +1,7 @@
 {
   "installCommand": "npm install -g pnpm@11.1.1 && pnpm install --ignore-scripts --no-frozen-lockfile",
   "buildCommand": "pnpm --filter @workspace/bluehazy-fm run build",
-  "outputDirectory": "artifacts/bluehazy-fm/dist/public",
+  "outputDirectory": "artifacts/bluehazy-fm/dist",
   "framework": null,
   "rewrites": [
     { "source": "/api/(.*)", "destination": "https://bluehazy-fm-api.onrender.com/api/$1" },
