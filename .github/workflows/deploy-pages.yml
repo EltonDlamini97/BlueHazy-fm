@@ -30,7 +30,7 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: artifacts/bluehazy-fm
-        run: npm install --legacy-peer-deps
+        run: npm install
 
       - name: Build frontend
         working-directory: artifacts/bluehazy-fm
