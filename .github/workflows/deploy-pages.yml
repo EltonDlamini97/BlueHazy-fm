@@ -30,14 +30,20 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: artifacts/bluehazy-fm
-        run: npm install
+        # ignore-scripts=true in root .npmrc blocks esbuild binary compilation
+        # so we explicitly override it here for this install
+        run: npm install --ignore-scripts=false --legacy-peer-deps
+
+      - name: Rebuild native binaries (esbuild etc.)
+        working-directory: artifacts/bluehazy-fm
+        run: npm rebuild
 
       - name: Build frontend
         working-directory: artifacts/bluehazy-fm
         env:
           BASE_PATH: /BlueHazy-fm/
           VITE_API_URL: https://bluehazy-fm-api.onrender.com
-        run: npm run build
+        run: ./node_modules/.bin/vite build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
