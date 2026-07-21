@@ -3,7 +3,7 @@ import { Menu, X, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
-const logoPath = "/images/logo.webp";
+const logoPath = `${import.meta.env.BASE_URL}images/logo.webp`;
 
 export function Navbar() {
   const [location] = useLocation();
