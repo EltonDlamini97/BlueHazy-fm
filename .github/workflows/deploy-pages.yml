@@ -28,27 +28,14 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Isolate and build frontend
+      - name: Install and build frontend
+        working-directory: artifacts/bluehazy-fm
         env:
           BASE_PATH: /BlueHazy-fm/
           VITE_API_URL: https://bluehazy-fm-api.onrender.com
         run: |
-          cp -r artifacts/bluehazy-fm /tmp/bluehazy-build
-          rm -f /tmp/bluehazy-build/.npmrc
-          cd /tmp/bluehazy-build
-          echo "=== package.json deps ==="
-          cat package.json | grep -A5 '"vite"'
-          echo "=== any lock files? ==="
-          ls -la package-lock.json 2>/dev/null || echo "no lockfile"
-          echo "=== npm install verbose ==="
-          npm install --legacy-peer-deps --loglevel verbose 2>&1 | tail -20
-          echo "=== binaries installed ==="
-          ls node_modules/.bin/ 2>/dev/null || echo "no bin"
-          echo "=== build ==="
+          npm install --legacy-peer-deps
           npm run build
-
-      - name: Copy build output
-        run: cp -r /tmp/bluehazy-build/dist artifacts/bluehazy-fm/dist
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
