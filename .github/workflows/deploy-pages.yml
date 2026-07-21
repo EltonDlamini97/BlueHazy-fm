@@ -28,29 +28,21 @@ jobs:
         with:
           node-version: '22'
 
-      # Copy frontend to a clean temp dir so no parent .npmrc interferes
-      - name: Copy frontend to clean workspace
-        run: |
-          cp -r artifacts/bluehazy-fm /tmp/bluehazy-fm
-          # Remove any inherited npmrc that might block scripts
-          rm -f /tmp/bluehazy-fm/.npmrc
-
-      - name: Install frontend dependencies
-        working-directory: /tmp/bluehazy-fm
+      - name: Install and build frontend
+        working-directory: artifacts/bluehazy-fm
         env:
-          NODE_ENV: development
-        run: npm install --legacy-peer-deps
-
-      - name: Build frontend
-        working-directory: /tmp/bluehazy-fm
-        env:
-          NODE_ENV: production
           BASE_PATH: /BlueHazy-fm/
           VITE_API_URL: https://bluehazy-fm-api.onrender.com
-        run: npm run build
-
-      - name: Copy dist back
-        run: cp -r /tmp/bluehazy-fm/dist artifacts/bluehazy-fm/dist
+          npm_config_ignore_scripts: "false"
+        run: |
+          echo "=== npm config ==="
+          npm config list
+          echo "=== installing ==="
+          npm install --include=dev --legacy-peer-deps
+          echo "=== node_modules/.bin contents ==="
+          ls node_modules/.bin/ | grep -i vite || echo "vite NOT found in .bin"
+          echo "=== building ==="
+          node_modules/.bin/vite build
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
