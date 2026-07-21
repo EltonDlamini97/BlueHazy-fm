@@ -37,11 +37,14 @@ jobs:
 
       - name: Install frontend dependencies
         working-directory: /tmp/bluehazy-fm
+        env:
+          NODE_ENV: development
         run: npm install --legacy-peer-deps
 
       - name: Build frontend
         working-directory: /tmp/bluehazy-fm
         env:
+          NODE_ENV: production
           BASE_PATH: /BlueHazy-fm/
           VITE_API_URL: https://bluehazy-fm-api.onrender.com
         run: npm run build
