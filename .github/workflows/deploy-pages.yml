@@ -34,14 +34,11 @@ jobs:
           BASE_PATH: /BlueHazy-fm/
           VITE_API_URL: https://bluehazy-fm-api.onrender.com
           npm_config_ignore_scripts: "false"
+          npm_config_production: "false"
         run: |
-          echo "=== npm config ==="
-          npm config list
-          echo "=== installing ==="
           npm install --include=dev --legacy-peer-deps
-          echo "=== node_modules/.bin contents ==="
-          ls node_modules/.bin/ | grep -i vite || echo "vite NOT found in .bin"
-          echo "=== building ==="
+          echo "packages in .bin: $(ls node_modules/.bin | wc -l)"
+          ls node_modules/.bin/ | grep -i vite || echo "vite NOT found"
           node_modules/.bin/vite build
 
       - name: Setup Pages
